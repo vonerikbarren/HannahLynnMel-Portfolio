@@ -1,0 +1,60 @@
+{
+  "collaborator": {
+    "name": "Hannah Lynn Mell",
+    "demographics": {
+      "age_group": "Mid-40s",
+      "mindset_and_vibe": "Resilient, highly positive attitude, adaptive, grounded"
+    },
+    "bio_summary": "Confluent curator of healing spaces: writer, music educator, yoga/Zumba/ballroom/Qi Gong choreographer, interfaith chaplain, EMDR-trained OG nerd.",
+    "core_pillars": [
+      {
+        "domain": "Music & Education",
+        "description": "Music instruction, education, and creative composition.",
+        "channels": [
+          "https://www.youtube.com/@hannahlynnmell"
+        ]
+      },
+      {
+        "domain": "Movement & Wellness",
+        "description": "Yoga, Zumba, Ballroom dancing, and Qi Gong choreography focused on somatic healing and movement."
+      },
+      {
+        "domain": "Spiritual & Mental Health Support",
+        "description": "Interfaith chaplaincy and EMDR-trained support space curation."
+      },
+      {
+        "domain": "Writing & Thought Leadership",
+        "description": "Substack essays, creative writing, and reflections.",
+        "channels": [
+          "https://mondaymorningmuse.substack.com/"
+        ]
+      }
+    ],
+    "online_presence": {
+      "youtube": "https://www.youtube.com/@hannahlynnmell",
+      "substack": "https://mondaymorningmuse.substack.com/",
+      "linktree": "https://linktr.ee/Hannahlynnmell",
+      "github_portfolio_repo": "https://github.com/vonerikbarren/HannahLynnMel-Portfolio"
+    },
+    "design_system": {
+      "color_palette": {
+        "primary_accent": "#F4320B",
+        "secondary_accent": "#2049DF",
+        "highlight_vibrant": "#94E718",
+        "deep_accent": "#8D1DE2",
+        "warm_accent": "#FF692A"
+      }
+    },
+    "landing_page_requirements": {
+      "target_audience": "Students, wellness clients, readers, and community members seeking music education, movement, or spiritual wellness.",
+      "key_sections": [
+        "Hero Section (Headline, Persona, High-Energy Healing Vibe)",
+        "About / Background (Music Educator, Movement Choreographer, Chaplain, EMDR-trained)",
+        "Services & Offerings (Music Lessons, Yoga & Choreography, Healing Spaces)",
+        "Publications & Writing (Substack Feed / Feature: Monday Morning Muse)",
+        "Video / Media Highlights (YouTube Embeds & Integrations)",
+        "Connect & Links (Linktree, Socials, Contact Form)"
+      ]
+    }
+  }
+}
