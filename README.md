@@ -44,6 +44,14 @@ Use it on its own anywhere:
 <script src="assets/js/seasons.js" data-auto data-season="auto"></script>
 ```
 
+## Bookshelf carousel
+
+The carousel opens as a bookshelf: every item is a thin spine; click one to pull the book out and see its full card, ↩ to put it back. The Shelf / Covers switch shows all cards open (the old carousel). Default in `client.js → images.carousel.view`.
+
+## Giving
+
+`client.js → donate`: the fourth carousel card and its Give panel for Team44point4 & Total Resonance. Set `directUrl` to a donation link (PayPal.me, Stripe Payment Link, Donorbox; use `{amount}` for the amount) to make "Give directly" go straight there; until then it opens the Patreon page.
+
 ## Messages
 
 The contact form, the chat and the Save-a-seat sign-up form all deliver to hannahlynnmell@gmail.com through FormSubmit (`contact.endpoint`). The first message triggers a one-time activation email to Hannah; after she confirms, swap the address in the endpoint for the random alias FormSubmit gives her.

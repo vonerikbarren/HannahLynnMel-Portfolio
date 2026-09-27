@@ -37,7 +37,23 @@
 
   /* ---------------- cards (carousel slides) ---------------- */
 
+  function glyph(text) { // ⟐ in the symbol face, read aloud as "Omni"
+    return esc(text).replace("⟐", '<span class="glyph" aria-hidden="true">⟐</span><span class="sr">Omni</span>');
+  }
+
   function card(slide, C) {
+    if (slide.type === "donate") {
+      var D = C.donate || {};
+      return '<button type="button" class="slide-card card-donate" data-panel="donate" aria-expanded="false" aria-controls="drawer">' +
+        '<span class="card-top"><span class="chip mono">Give</span></span>' +
+        (D.logo && D.logo.src
+          ? '<span class="logo-mask give-logo" role="img" aria-label="' + esc(D.logo.alt || D.name) + '" style="--logo:url(\'' + esc(D.logo.src) + '\')"></span>'
+          : '<span class="give-mark" aria-hidden="true"><span class="gm-num">44<i>.</i>4</span><span class="gm-wave"></span></span>') +
+        '<span class="card-title">' + esc(D.cardTitle || D.name) + "</span>" +
+        '<span class="card-sub">' + esc(D.cardSub || D.tagline || "") + "</span>" +
+        '<span class="card-foot mono"><span>Support the work</span><span class="card-open">Ways to give <span aria-hidden="true">↓</span></span></span>' +
+        "</button>";
+    }
     if (slide.type === "omni") {
       var O = C.omni || {};
       return '<button type="button" class="slide-card card-omni" data-panel="omni" aria-expanded="false" aria-controls="drawer" aria-label="OmniReality: peek inside">' +
@@ -47,7 +63,7 @@
         '<defs><linearGradient id="omc-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4320B"/><stop offset=".3" stop-color="#FF692A"/><stop offset=".65" stop-color="#8D1DE2"/><stop offset="1" stop-color="#2049DF"/></linearGradient></defs>' +
         '<circle cx="60" cy="60" r="9" fill="#94E718"/></svg></span>' +
         '<span class="card-title">' + esc(O.cardTitle || "Something is gathering") + "</span>" +
-        '<span class="card-sub">' + esc(O.cardSub || "A doorway, if you're curious.") + "</span>" +
+        '<span class="card-sub">' + glyph(O.cardSub || "Join me, to my ⟐reality.") + "</span>" +
         '<span class="card-foot mono"><span>' + (O.url ? "Open" : "Preview") + '</span><span class="card-open">Peek inside <span aria-hidden="true">↓</span></span></span>' +
         "</button>";
     }
@@ -197,6 +213,74 @@
     });
   }
 
+  /* ---------------- give panel ---------------- */
+  function donatePanel(C) {
+    var D = C.donate || {}, cur = D.currency || "$";
+    var amounts = D.amounts || [10, 25, 50, 100];
+    return '<div class="split">' +
+      '<div class="split-left">' +
+      '<figure class="flyer give-poster"><div class="flyer-made give-made">' +
+      '<span class="mono flyer-top">Arts & education for social change</span>' +
+      (D.logo && D.logo.src
+        ? '<span class="logo-mask poster-logo" role="img" aria-label="' + esc(D.logo.alt || D.name) + '" style="--logo:url(\'' + esc(D.logo.src) + '\')"></span>'
+        : '<span class="give-big">44<i>.</i>4</span>') +
+      '<span class="flyer-title">' + esc(D.name || "") + "</span>" +
+      '<span class="give-staff" aria-hidden="true"></span>' +
+      '<span class="mono flyer-where">with ' + esc(C.name) + "</span>" +
+      "</div></figure></div>" +
+      '<div class="split-right">' +
+      '<p class="mono panel-kicker" style="color:var(--t-movement)">Give</p>' +
+      '<h3 class="panel-title">' + esc(D.name || "") + "</h3>" +
+      '<p class="panel-sub">' + esc(D.tagline || "") + "</p>" +
+      (D.description || []).map(function (p) { return '<p class="prose">' + esc(p) + "</p>"; }).join("") +
+      '<ol class="give-ways">' +
+      // 1. give directly
+      '<li class="give-way"><p class="mono give-step">1 · Give directly</p>' +
+      '<div class="give-freq" role="group" aria-label="How often"><button type="button" class="pick" data-freq="once" aria-pressed="true">One time</button><button type="button" class="pick" data-freq="monthly" aria-pressed="false">Monthly</button></div>' +
+      '<div class="give-amounts" role="group" aria-label="Amount">' + amounts.map(function (a, i) {
+        return '<button type="button" class="pick amt" data-amt="' + a + '" aria-pressed="' + (i === 1) + '">' + esc(cur) + a + "</button>";
+      }).join("") +
+      '<label class="give-other"><span class="sr">Other amount</span><span aria-hidden="true">' + esc(cur) + '</span><input id="give-other" inputmode="decimal" placeholder="Other"></label></div>' +
+      '<div class="panel-actions"><a class="btn" id="give-go" target="_blank" rel="noopener" href="#">Give</a>' +
+      '<span class="give-note mono" id="give-note"></span></div></li>' +
+      // 2. visit the page
+      '<li class="give-way"><p class="mono give-step">2 · Visit the page</p>' +
+      link(D.pageUrl || "#", esc(D.pageLabel || "Visit the page") + ' <span aria-hidden="true">↗</span>', "textlink") + "</li>" +
+      // 3. ask Hannah
+      '<li class="give-way"><p class="mono give-step">3 · Questions about giving?</p>' +
+      '<button type="button" class="btn btn-ghost" id="give-ask">Ask Hannah in the chat</button></li>' +
+      "</ol></div></div>";
+  }
+
+  function wireDonate(C, root) {
+    var D = C.donate || {}, cur = D.currency || "$";
+    var freq = "once", amt = (D.amounts || [10, 25])[1] || 25;
+    var go = root.querySelector("#give-go"), note = root.querySelector("#give-note"), other = root.querySelector("#give-other");
+    function update() {
+      var direct = D.directUrl && D.directUrl.length;
+      go.textContent = "Give " + cur + amt + (freq === "monthly" ? " monthly" : "");
+      go.href = direct ? D.directUrl.replace("{amount}", encodeURIComponent(amt)) : (D.pageUrl || "#");
+      note.textContent = direct ? "" : (freq === "monthly" ? "Monthly giving is set up on Patreon" : "Opens the Team44point4 page to complete your gift");
+    }
+    root.addEventListener("click", function (e) {
+      var f = e.target.closest("[data-freq]"), a = e.target.closest("[data-amt]");
+      if (f) { freq = f.dataset.freq; root.querySelectorAll("[data-freq]").forEach(function (b) { b.setAttribute("aria-pressed", String(b === f)); }); update(); }
+      if (a) { amt = +a.dataset.amt; other.value = ""; root.querySelectorAll("[data-amt]").forEach(function (b) { b.setAttribute("aria-pressed", String(b === a)); }); update(); }
+    });
+    other.addEventListener("input", function () {
+      var v = parseFloat(other.value.replace(/[^0-9.]/g, ""));
+      if (v > 0) { amt = Math.round(v * 100) / 100; root.querySelectorAll("[data-amt]").forEach(function (b) { b.setAttribute("aria-pressed", "false"); }); update(); }
+    });
+    root.querySelector("#give-ask").addEventListener("click", function () {
+      if (window.HLMChatInstance) { window.HLMChatInstance.openWith("donate"); return; }
+      // embedded (no chat): fall back to the contact form with the topic set
+      var sel = document.getElementById("cf-topic"); if (sel) sel.value = "Donating";
+      var c = document.getElementById("connect"); if (c) c.scrollIntoView({ behavior: "smooth" });
+      setTimeout(function () { var n = document.getElementById("cf-name"); if (n) n.focus({ preventScroll: true }); }, 600);
+    });
+    update();
+  }
+
   /* ---------------- calendar panel ---------------- */
 
   function calendarPanel(C) {
@@ -309,10 +393,11 @@
     function show(which) {
       if (open === which) { close(); return; }
       open = which;
-      inner.innerHTML = '<div class="drawer-bar"><p class="mono">' + (which === "calendar" ? "Calendar" : which === "omni" ? '<span class="glyph">⟐</span>mniReality' : "Highlight") + "</p>" +
+      inner.innerHTML = '<div class="drawer-bar"><p class="mono">' + (which === "calendar" ? "Calendar" : which === "omni" ? '<span class="glyph">⟐</span>mniReality' : which === "donate" ? "Give" : "Highlight") + "</p>" +
         '<button type="button" class="drawer-close mono" aria-label="Close panel">Close ✕</button></div>' +
-        (which === "calendar" ? calendarPanel(C) : which === "omni" ? (window.Omni ? window.Omni.panelHTML(C) : "") : highlightPanel(C));
+        (which === "calendar" ? calendarPanel(C) : which === "donate" ? donatePanel(C) : which === "omni" ? (window.Omni ? window.Omni.panelHTML(C) : "") : highlightPanel(C));
       if (which === "calendar") wireCalendar(C, inner);
+      else if (which === "donate") wireDonate(C, inner);
       else if (which === "omni") { if (window.Omni) requestAnimationFrame(function () { window.Omni.init(C, { root: inner, timed: true }); }); }
       else wireRsvp(C, inner);
       inner.querySelector(".drawer-close").addEventListener("click", function () {

@@ -1042,3 +1042,178 @@ button.textlink { border: 0; background: var(--confluence) no-repeat 0 100% / 10
 .omni-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin-top: 16px; }
 .omni-foot .omni-note { margin: 0; }
 .card-omni .chip, .drawer-bar .glyph, .drawer-bar p:has(.glyph) { text-transform: none; letter-spacing: 0.04em; }
+
+/* ---------- Give: Team44point4 & Total Resonance ---------- */
+.card-donate {
+  color: #1B1530;
+  background:
+    repeating-linear-gradient(to bottom, rgba(27,21,48,0.12) 0 1px, transparent 1px 7px) 0 62% / 100% 29px no-repeat,
+    radial-gradient(120% 80% at 100% 0%, rgba(148, 231, 24, 0.55), transparent 55%),
+    radial-gradient(110% 90% at 0% 100%, rgba(255, 105, 42, 0.75), transparent 60%),
+    linear-gradient(160deg, #FFF3E6, #FFD9C2);
+}
+.card-donate .chip { color: #B8460F; }
+.card-donate .card-title { margin-top: 0; font-size: clamp(1.6rem, 2.4vw, 2.05rem); }
+.card-donate .card-foot { border-top-color: rgba(27, 21, 48, 0.25); }
+.give-mark { margin: auto 0 4px; position: relative; display: block; }
+.gm-num { font-family: var(--f-display); font-weight: 500; font-size: clamp(3.6rem, 6vw, 4.8rem); line-height: 0.8; letter-spacing: -0.03em;
+  background: var(--confluence); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.gm-num i, .give-big i { font-style: normal; color: #94E718; -webkit-text-fill-color: #94E718; }
+.gm-wave { display: block; height: 14px; margin-top: 8px; width: 70%;
+  background: radial-gradient(circle at 10px -4px, transparent 8px, #F4320B 8.5px 10px, transparent 10.5px) 0 0 / 20px 14px repeat-x; opacity: 0.7; }
+
+.give-made {
+  background:
+    radial-gradient(circle at 80% 18%, #94E718 0 6%, transparent 6.5%),
+    radial-gradient(110% 70% at 0% 100%, #FF692A, transparent 62%),
+    radial-gradient(80% 60% at 100% 70%, rgba(141, 29, 226, 0.6), transparent 70%),
+    linear-gradient(160deg, #1B1530, #3A1640 60%, #1B1530);
+}
+.give-big { font-family: var(--f-display); font-weight: 500; font-size: clamp(5rem, 11vw, 8rem); line-height: 0.8; letter-spacing: -0.04em;
+  background: var(--confluence); -webkit-background-clip: text; background-clip: text; color: transparent; filter: brightness(1.3); }
+.give-staff { height: 17px; background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.45) 0 1px, transparent 1px 4px); }
+.give-ways { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 0; }
+.give-way { padding: 16px 0; border-top: 1px solid var(--hair); display: grid; gap: 10px; justify-items: start; }
+.give-way:last-child { border-bottom: 1px solid var(--hair); }
+.give-step { margin: 0; color: var(--ink-3); }
+.give-freq, .give-amounts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.give-amounts .pick, .give-freq .pick { font-family: var(--f-mono); font-size: 0.8rem; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+.give-amounts .pick[aria-pressed="true"], .give-freq .pick[aria-pressed="true"] { background: var(--btn-bg); color: var(--btn-ink); border-color: var(--btn-bg); }
+.give-other { display: inline-flex; align-items: center; gap: 4px; border-bottom: 1px solid var(--hair-strong); padding: 0 4px; font-family: var(--f-mono); color: var(--ink-3); }
+.give-other input { width: 70px; border: 0; background: transparent; font: inherit; font-size: 0.9rem; color: var(--ink); padding: 8px 2px; }
+.give-other input:focus { outline: none; }
+.give-other:focus-within { border-color: var(--focus); }
+.give-note { color: var(--ink-3); text-transform: none; letter-spacing: 0.02em; font-size: 0.7rem; }
+.give-way .panel-actions { margin-top: 2px; }
+.btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--hair-strong); }
+.btn-ghost:hover { color: #FFFFFF; border-color: transparent; }
+
+/* ---------- Team44point4 logo (transparent line art, coloured per theme) ---------- */
+:root { --give-bg-1: #FFF3E6; --give-bg-2: #FFD9C2; --give-ink: #1B1530; --give-chip: #B8460F; --give-rule: rgba(27,21,48,0.25); }
+:root[data-theme="dark"] { --give-bg-1: #2A1830; --give-bg-2: #1B1226; --give-ink: #FFF3E6; --give-chip: #FF9A63; --give-rule: rgba(255,243,230,0.25); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --give-bg-1: #2A1830; --give-bg-2: #1B1226; --give-ink: #FFF3E6; --give-chip: #FF9A63; --give-rule: rgba(255,243,230,0.25); } }
+.logo-mask {
+  display: block; background: currentColor;
+  -webkit-mask: var(--logo) center / contain no-repeat; mask: var(--logo) center / contain no-repeat;
+}
+.card-donate {
+  color: var(--give-ink);
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(148, 231, 24, 0.45), transparent 55%),
+    radial-gradient(110% 90% at 0% 100%, rgba(255, 105, 42, 0.6), transparent 60%),
+    linear-gradient(160deg, var(--give-bg-1), var(--give-bg-2));
+}
+.card-donate .chip { color: var(--give-chip); }
+.card-donate .card-foot { border-top-color: var(--give-rule); }
+.card-donate .card-title { font-size: clamp(1.3rem, 2vw, 1.65rem); }
+.give-logo { width: 100%; flex: 1 1 auto; min-height: 0; margin: 2px 0 4px; color: var(--give-ink); transition: transform .5s cubic-bezier(.5,1.6,.4,1); }
+.card-donate:hover .give-logo { transform: translateX(6px) rotate(-2deg); }
+@media (prefers-reduced-motion: reduce) { .card-donate:hover .give-logo { transform: none; } }
+/* on the dark poster the fox rides in her gradient */
+.poster-logo { width: 100%; aspect-ratio: 900 / 847; max-height: 58%; background: linear-gradient(120deg, #FF7A57, #FF9A63 30%, #C28DFF 65%, #8098FF); filter: drop-shadow(0 0 10px rgba(141, 29, 226, 0.45)); }
+/* poster: logo leads, no lime dot over the lettering, title fits */
+.give-poster .give-made {
+  background:
+    radial-gradient(110% 70% at 0% 100%, #FF692A, transparent 62%),
+    radial-gradient(80% 60% at 100% 70%, rgba(141, 29, 226, 0.6), transparent 70%),
+    linear-gradient(160deg, #1B1530, #3A1640 60%, #1B1530);
+  align-content: space-between;
+}
+.give-poster .poster-logo { width: 96%; max-height: none; justify-self: center; }
+.give-poster .flyer-title { font-size: clamp(1.7rem, 3vw, 2.3rem); line-height: 0.95; }
+.give-poster .give-staff { display: none; }
+
+/* ================= the bookshelf carousel ================= */
+.carousel { --book-h: 400px; --spine-w: 62px; --shelf-top: #E9DFD2; --shelf-front: #CDBBA6; }
+:root[data-theme="dark"] .carousel { --shelf-top: #3A2F4A; --shelf-front: #271F33; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .carousel { --shelf-top: #3A2F4A; --shelf-front: #271F33; } }
+@media (max-width: 700px) { .carousel { --book-h: min(400px, 108vw); --spine-w: 50px; } }
+
+.book .spine { display: none; }
+.cover { position: relative; }
+.shelve { display: none; }
+
+/* shelf view */
+.carousel.is-shelf .track { gap: 6px; align-items: flex-end; height: var(--book-h); padding-top: 14px; scroll-snap-type: none; }
+.carousel.is-shelf .book {
+  flex: 0 0 var(--spine-w); height: var(--book-h); position: relative; perspective: 1400px;
+  transition: flex-basis .55s cubic-bezier(.2,.8,.2,1);
+}
+.carousel.is-shelf .book.is-open { flex-basis: calc(var(--book-h) * 0.8); }
+.carousel.is-shelf .book .spine { display: flex; }
+.carousel.is-shelf .cover {
+  position: absolute; left: 0; bottom: 0; width: calc(var(--book-h) * 0.8);
+  transform-origin: left center; transform: rotateY(78deg); opacity: 0; visibility: hidden;
+  transition: transform .55s cubic-bezier(.2,.8,.2,1) .08s, opacity .3s ease .1s, visibility 0s linear .6s;
+}
+.carousel.is-shelf .book.is-open .cover { transform: none; opacity: 1; visibility: visible; transition: transform .55s cubic-bezier(.2,.8,.2,1) .08s, opacity .3s ease .1s, visibility 0s; }
+.carousel.is-shelf .book.is-open .shelve { display: grid; }
+.shelve {
+  position: absolute; top: 10px; right: 10px; z-index: 3; width: 32px; height: 32px; place-items: center; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.6); background: rgba(27,21,48,0.55); color: #FFFFFF; cursor: pointer; font-size: 1rem;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.shelve:hover { background: #1B1530; }
+.card-calendar ~ .shelve, .card-donate ~ .shelve { border-color: var(--hair-strong); }
+
+/* the spine */
+.spine {
+  position: absolute; left: 0; bottom: 0; width: var(--spine-w); height: var(--h, 100%);
+  flex-direction: column; align-items: center; gap: 10px; padding: 16px 0 14px; box-sizing: border-box;
+  border: 0; border-radius: 3px 3px 2px 2px; cursor: pointer; font: inherit; color: #FFFFFF; overflow: hidden;
+  background-size: cover; background-position: center;
+  box-shadow: inset 4px 0 6px rgba(255,255,255,0.22), inset -6px 0 10px rgba(11,8,32,0.28), 0 8px 14px rgba(27,21,48,0.22);
+  transform-origin: right bottom;
+  transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .3s ease, box-shadow .3s;
+}
+.spine::before, .spine::after { /* foil bands, like a hardback */
+  content: ""; position: absolute; left: 7px; right: 7px; height: 5px; border-top: 1px solid currentColor; border-bottom: 1px solid currentColor; opacity: 0.45;
+}
+.spine::before { top: 8px; } .spine::after { bottom: 34px; }
+.spine:hover, .spine:focus-visible { transform: translateY(-10px); box-shadow: inset 4px 0 6px rgba(255,255,255,0.22), inset -6px 0 10px rgba(11,8,32,0.28), 0 16px 22px rgba(27,21,48,0.28); }
+.book.is-open .spine { transform: rotateY(-85deg); opacity: 0; pointer-events: none; }
+.sp-title {
+  writing-mode: vertical-rl; flex: 1 1 auto; min-height: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: var(--f-display); font-style: italic; font-size: 1.12rem; letter-spacing: 0.01em; margin-top: 6px;
+}
+.sp-sub { writing-mode: vertical-rl; font-size: 0.56rem; opacity: 0.8; margin-bottom: 18px; }
+.sp-glyph { font-size: 1.3rem; line-height: 1; color: #94E718; margin-top: 8px; }
+.sp-dot { width: 10px; height: 10px; border-radius: 50%; background: #94E718; margin-top: 10px; flex: none; }
+.sp-dots { display: grid; gap: 4px; margin-top: 10px; }
+.sp-dots i { width: 6px; height: 6px; border-radius: 50%; background: #F4320B; }
+.sp-dots i:nth-child(2) { background: #2049DF; } .sp-dots i:nth-child(3) { background: #8D1DE2; }
+.sp-logo { width: 42px; height: 40px; flex: none; margin-top: 8px; color: var(--give-ink); }
+
+.spine-omni {
+  background:
+    radial-gradient(1px 1px at 30% 20%, #FFF 99%, transparent), radial-gradient(1px 1px at 70% 45%, #FFF 99%, transparent),
+    radial-gradient(1.2px 1.2px at 40% 70%, #E9D6FF 99%, transparent), radial-gradient(1px 1px at 60% 88%, #FFF 99%, transparent),
+    linear-gradient(180deg, #070519, #1B0F45 55%, #2A1A55);
+}
+.spine-highlight { background: linear-gradient(180deg, #F4320B 0%, #FF692A 26%, #8D1DE2 62%, #2049DF 100%); }
+.spine-cal {
+  color: var(--ink); background-color: rgba(var(--ground-rgb), 0.95);
+  background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-v) 1px, transparent 1px);
+  background-size: 10px 10px; border: 1px solid var(--hair-strong);
+}
+.spine-give { color: var(--give-ink); background: linear-gradient(180deg, var(--give-bg-1), var(--give-bg-2)); }
+.spine-give::before, .spine-give::after { opacity: 0.3; }
+.spine-photo { background-color: #2A1450; }
+.spine-blank {
+  color: var(--ink-3); border: 1px dashed var(--hair-strong); box-shadow: none;
+  background: repeating-linear-gradient(135deg, var(--grid-line-major) 0 1px, transparent 1px 8px), rgba(var(--ground-rgb), 0.6);
+}
+
+/* the shelf the books stand on */
+.shelf-plank { display: none; }
+.carousel.is-shelf .shelf-plank {
+  display: block; height: 14px; margin: 0 calc(var(--pad-x) * -0.25) 0 -6px; border-radius: 2px;
+  background: linear-gradient(180deg, var(--shelf-top) 0 40%, var(--shelf-front) 40% 100%);
+  box-shadow: 0 10px 18px rgba(27, 21, 48, 0.18), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.shelf-seg { margin-left: 6px; }
+.shelf-seg button { padding: 7px 10px; }
+@media (max-width: 520px) { .car-ctl { flex-wrap: wrap; } .shelf-seg { order: 5; margin: 6px 0 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .carousel.is-shelf .book, .carousel.is-shelf .cover, .spine { transition: none !important; }
+}

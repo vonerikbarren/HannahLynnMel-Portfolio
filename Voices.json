@@ -1,0 +1,84 @@
+{
+  "voice_types": [
+    {
+      "id": "singing",
+      "category": "vocal_music",
+      "description": "Melodic vocal expression using pitch, rhythm, and tone."
+    },
+    {
+      "id": "rapping",
+      "category": "vocal_music",
+      "description": "Rhythmic spoken delivery emphasizing flow, cadence, and lyrical density."
+    },
+    {
+      "id": "spoken_word",
+      "category": "performance_poetry",
+      "description": "Expressive speech focused on storytelling, emotion, and cadence."
+    },
+    {
+      "id": "narration",
+      "category": "storytelling",
+      "description": "Descriptive or explanatory speech guiding an audience through events."
+    },
+    {
+      "id": "dialogue",
+      "category": "theatrical",
+      "description": "Conversational exchange between characters or performers."
+    },
+    {
+      "id": "chanting",
+      "category": "ritualistic",
+      "description": "Repetitive rhythmic vocalization often used for emphasis or unity."
+    },
+    {
+      "id": "whispering",
+      "category": "vocal_texture",
+      "description": "Soft, breathy communication conveying intimacy or secrecy."
+    },
+    {
+      "id": "shouting",
+      "category": "vocal_texture",
+      "description": "Loud, forceful vocalization used for intensity or emphasis."
+    },
+    {
+      "id": "vocalization",
+      "category": "nonverbal",
+      "description": "Non‑linguistic sounds such as humming, sighs, grunts, or tonal noises."
+    },
+    {
+      "id": "beatboxing",
+      "category": "vocal_music",
+      "description": "Percussive vocal technique simulating drums and rhythmic textures."
+    },
+    {
+      "id": "sign_language",
+      "category": "visual_language",
+      "description": "Manual and gestural communication using structured linguistic signs."
+    },
+    {
+      "id": "gesture_speech",
+      "category": "visual_expression",
+      "description": "Expressive body movements that communicate meaning without formal sign language."
+    },
+    {
+      "id": "mime",
+      "category": "visual_expression",
+      "description": "Silent physical storytelling using exaggerated movement and facial expression."
+    },
+    {
+      "id": "body_percussion",
+      "category": "physical_music",
+      "description": "Communication through rhythmic tapping, clapping, or striking the body."
+    },
+    {
+      "id": "instrumental_voice",
+      "category": "extended_expression",
+      "description": "Using instruments as the primary communicative voice in place of speech."
+    },
+    {
+      "id": "digital_voice",
+      "category": "synthetic_expression",
+      "description": "Communication through vocoders, AI voices, or processed vocal effects."
+    }
+  ]
+}0mni

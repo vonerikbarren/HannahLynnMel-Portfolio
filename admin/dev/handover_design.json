@@ -368,6 +368,7 @@
         "⟐mniReality card",
         "Highlight card",
         "Calendar card",
+        "Give card (Team44point4 & Total Resonance)",
         "photos (every third one arched)",
         "placeholders"
       ],
@@ -375,7 +376,21 @@
       "aspect": "4:5",
       "gap": "14px",
       "controls": "← counter (01 / 08, tabular) gradient progress bar →",
-      "autoplay": "6s, pauses on hover, focus, open drawer, hidden tab, or 12s after any interaction"
+      "autoplay": "Covers view only; the shelf stays still.",
+      "bookshelf": {
+        "default_view": "shelf (Shelf / Covers switch in the carousel controls; remembered per visitor)",
+        "spine": "62px wide (50px on phones), heights vary 90–100% so the shelf reads naturally, standing on a 14px shelf plank (#E9DFD2/#CDBBA6 light, #3A2F4A/#271F33 dark). Two foil bands top and bottom, left highlight + right shade (inset shadows), title set vertically in Bodoni italic, a tiny mono label at the foot.",
+        "spine_skins": {
+          "⟐mniReality": "night sky with stars, lime ⟐",
+          "highlight": "confluence gradient top→bottom, lime dot, date",
+          "calendar": "paper with grid, three pillar dots",
+          "give": "peach/plum with the fox logo",
+          "photos": "the photo itself behind a dark gradient",
+          "placeholders": "dashed hatch"
+        },
+        "pull_out": "Clicking a spine widens its slot to the cover width (flex-basis .55s cubic-bezier(.2,.8,.2,1)); the spine swings away (rotateY -85deg) and the cover swings in from rotateY 78deg around its left edge, then the shelf scrolls to centre it. Only one book out at a time. ↩ puts it back. Hover lifts a spine 10px.",
+        "why": "Seeing every item as a spine at once makes choosing easier; the full card is one click away."
+      }
     },
     "highlight_card": "Confluence card with a lime dot, a translucent torn-paper strip across the middle (collage), chips at the top, italic display title, date/time footer with 'Details ↓'.",
     "calendar_card": "Paper card with a 16px grid texture, month label, mini month of dots (event days in pillar colour, today ringed in lime), a big gradient numeral for the next date, 'Open ↓'.",
@@ -451,8 +466,10 @@
     "chat": "Bottom-left pill with her avatar 'Chat with Hannah'. Panel 370×540 max, gradient border, grid-textured log, Hannah's bubbles on ground with hairline border (4px corner at the tail), visitor bubbles inverted; mono chip buttons; round gradient send button. Standalone site only.",
     "footer": "Margins season switcher, Paper switcher, colophon in italic, © line.",
     "scrollbar": "6px, transparent track; idle thumb rgba(110,100,140,.18); while scrolling the thumb turns into the confluence gradient, fading back 900ms after scrolling stops.",
-    "omni_card": "Night-sky card with scattered star dots and violet/blue haze, a small ⟐ mark with a glow, a dashed tilted orbit ring carrying five palette-coloured dots that spin (faster on hover), title 'Something is gathering', sub 'A doorway, if you're curious.', footer 'Peek inside ↓'.",
-    "quick_menu": "Sticky ⟐ button top right (dark disc, gradient ring, lime core; turns 90deg on hover/open) opening a gradient-bordered menu: Learn More About Hannah, Contact Hannah, Support Hannah (Patreon), Visit Hannah's ⟐Reality."
+    "omni_card": "Night-sky card with scattered star dots and violet/blue haze, a small ⟐ mark with a glow, a dashed tilted orbit ring carrying five palette-coloured dots that spin (faster on hover), title 'Something is being realized.', sub 'Join me, to my ⟐reality.', footer 'Peek inside ↓'.",
+    "quick_menu": "Sticky ⟐ button top right (dark disc, gradient ring, lime core; turns 90deg on hover/open) opening a gradient-bordered menu: Learn More About Hannah, Contact Hannah, Support Hannah (Patreon), Visit Hannah's ⟐Reality.",
+    "give_card": "Theme-aware card. Light: peach (#FFF3E6 → #FFD9C2) with orange and lime washes; dark: plum (#2A1830 → #1B1226). The Team44point4 logo (fox on a bicycle, transparent line art, assets/img/team44point4-logo.png) is drawn as a CSS mask filled with the card's ink (#1B1530 light / #FFF3E6 dark), so it reads in both modes; it leans forward on hover. Title 'Team44point4 & Total Resonance', sub 'Arts & education for social change.', footer 'Ways to give ↓'. Panel: dark poster with the logo filled in a warm-to-violet gradient (#FF7A57 → #FF9A63 → #C28DFF → #8098FF) and a soft violet glow; right side has three numbered ways to give: 1 give directly (one time / monthly, amount chips + other, Give button), 2 visit the Patreon page, 3 ask Hannah (opens the chat in its giving flow; falls back to the contact form with topic 'Donating' when embedded).",
+    "seasonal_piles": "A rounded heap of the season's objects at the end of every section, on the side opposite that divider's rip (alternating where there is no rip); drops in leaf by leaf when scrolled into view."
   },
   "motion": {
     "easings": {
@@ -509,6 +526,9 @@
       "linktree": "https://linktr.ee/Hannahlynnmell",
       "instagram": "https://www.instagram.com/hannahlynnmell",
       "spotify_profile": "https://open.spotify.com/user/1299316400"
+    },
+    "logos": {
+      "team44point4": "assets/img/team44point4-logo.png (900×847, black line art with transparent background; use as a mask and fill with any colour or gradient)"
     }
   },
   "tokens_css": ":root{--ground:#F7F5FB;--ink:#1B1530;--ink-2:#4A4362;--ink-3:#6E6786;--hair:rgba(27,21,48,.16);--c-writing:#F4320B;--c-music:#2049DF;--c-spark:#94E718;--c-healing:#8D1DE2;--c-movement:#FF692A;--confluence:linear-gradient(100deg,#F4320B 0%,#FF692A 26%,#8D1DE2 62%,#2049DF 100%);--f-display:'Bodoni Moda',Didot,serif;--f-body:'Literata',Georgia,serif;--f-mono:'IBM Plex Mono',ui-monospace,monospace;--grid-size:32px;--grid-major:128px}"

@@ -68,19 +68,51 @@
 
   var CAR = IMG.carousel;
   var hasCar = !!(CAR && CAR.slides && CAR.slides.length);
+  /* Each carousel item is a book: a thin spine on the shelf, and a cover
+   * (the full card) that slides out when you pull it. */
+  function spineHTML(sl, i) {
+    var H = C.highlight || {}, D = C.donate || {}, t = "", sub = "", cls = "", style = "", top = "";
+    var heights = [100, 94, 97, 91, 99, 93, 96, 90, 98];
+    function g(text) { return esc(text).replace("⟐", '<span class="glyph" aria-hidden="true">⟐</span>'); }
+    if (sl.type === "omni") { t = "⟐mniReality"; sub = "peek"; cls = "spine-omni"; top = '<span class="sp-glyph glyph" aria-hidden="true">⟐</span>'; }
+    else if (sl.type === "highlight") {
+      t = H.title || "Highlight"; cls = "spine-highlight";
+      if (H.date) { var hd = H.date.split("-"); sub = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+hd[1] - 1] + " " + (+hd[2]); }
+      top = '<span class="sp-dot" aria-hidden="true"></span>';
+    }
+    else if (sl.type === "calendar") { t = "Calendar"; sub = new Date().toLocaleDateString("en-US", { month: "short" }); cls = "spine-cal"; top = '<span class="sp-dots" aria-hidden="true"><i></i><i></i><i></i></span>'; }
+    else if (sl.type === "donate") {
+      t = "Team44point4"; sub = "give"; cls = "spine-give";
+      if (D.logo && D.logo.src) top = '<span class="logo-mask sp-logo" aria-hidden="true" style="--logo:url(\'' + esc(D.logo.src) + '\')"></span>';
+    }
+    else {
+      t = sl.caption || (sl.alt ? "Moments" : "Slide " + (i + 1)); sub = "No. " + String(i + 1).padStart(2, "0");
+      cls = sl.alt ? "spine-photo" : "spine-blank";
+      if (sl.src && sl.alt) style = "background-image:linear-gradient(90deg, rgba(11,8,32,.55), rgba(11,8,32,.25) 40%, rgba(11,8,32,.6)),url('" + esc(sl.src) + "');";
+    }
+    var label = sl.type === "omni" ? "OmniReality" : t;
+    return '<button type="button" class="spine ' + cls + '" style="--h:' + heights[i % heights.length] + '%;' + style + '" aria-expanded="false" aria-label="Take out: ' + esc(label) + '">' +
+      top + '<span class="sp-title">' + g(t) + '</span><span class="mono sp-sub">' + esc(sub) + "</span></button>";
+  }
   function carouselHTML() {
     var nSlides = CAR.slides.length;
-    return '<div class="carousel" role="region" aria-roledescription="carousel" aria-label="Moments with Hannah">' +
+    return '<div class="carousel is-shelf" id="carousel" role="region" aria-roledescription="carousel" aria-label="Moments with Hannah">' +
       '<div class="track" id="track" tabindex="0">' +
       CAR.slides.map(function (sl, i) {
-        return '<div class="slide" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " of " + nSlides + '">' +
-          (sl.type && window.Panels ? window.Panels.card(sl, C) : fig(sl, "slide-img" + (i % 3 === 1 ? " arched" : ""), "Slide " + (i + 1))) + "</div>";
+        return '<div class="slide book" data-i="' + i + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " of " + nSlides + '">' +
+          spineHTML(sl, i) +
+          '<div class="cover">' +
+          (sl.type && window.Panels ? window.Panels.card(sl, C) : fig(sl, "slide-img" + (i % 3 === 1 ? " arched" : ""), "Slide " + (i + 1))) +
+          '<button type="button" class="shelve" aria-label="Put it back on the shelf" title="Put it back">↩</button>' +
+          "</div></div>";
       }).join("") + "</div>" +
+      '<div class="shelf-plank" aria-hidden="true"></div>' +
       '<div class="car-ctl">' +
       '<button type="button" class="car-btn" id="car-prev" aria-label="Previous slide">←</button>' +
       '<p class="mono car-count" aria-live="polite"><span id="car-i">01</span> / ' + String(nSlides).padStart(2, "0") + "</p>" +
       '<div class="car-bar" aria-hidden="true"><span id="car-fill"></span></div>' +
       '<button type="button" class="car-btn" id="car-next" aria-label="Next slide">→</button>' +
+      '<div class="seg shelf-seg" role="group" aria-label="View"><button type="button" class="mono" data-view="shelf" aria-pressed="true">Shelf</button><button type="button" class="mono" data-view="covers" aria-pressed="false">Covers</button></div>' +
       "</div></div>" + (window.Panels ? window.Panels.drawerHTML() : "");
   }
   // Carousel sits at the top of the page, above or below the location line.
@@ -214,7 +246,7 @@
     '<div class="field-row"><label for="cf-email">Email</label><input id="cf-email" name="email" type="email" autocomplete="email" required></div>' +
     '<div class="field-row"><label for="cf-topic">Interested in</label><select id="cf-topic" name="topic">' +
     C.pillars.map(function (p) { return "<option>" + esc(p.service) + "</option>"; }).join("") +
-    "<option>Somatic coaching</option><option>Something else</option></select></div>" +
+    "<option>Somatic coaching</option><option>Donating</option><option>Something else</option></select></div>" +
     '<div class="field-row"><label for="cf-msg">Message</label><textarea id="cf-msg" name="message" rows="5" required></textarea></div>' +
     '<button class="btn" type="submit">Send message</button>' +
     '<p class="form-status" id="form-status" role="status" aria-live="polite"></p>' +
@@ -280,15 +312,17 @@
   }
 
   /* ---------- ⟐ OmniReality loader ---------- */
-  // Any link to #omni (top menu, quick menu) opens the ⟐ card's panel under the carousel.
+  // Links to #omni / #give (top menu, quick menu) open that card's panel under the carousel.
+  var CARD_LINKS = { "#omni": "omni", "#give": "donate" };
   document.addEventListener("click", function (e) {
-    var a = e.target.closest('a[href="#omni"]');
+    var a = e.target.closest('a[href="#omni"], a[href="#give"]');
     if (!a) return;
     e.preventDefault();
-    var card = document.querySelector('.slide-card[data-panel="omni"]');
+    var card = document.querySelector('.slide-card[data-panel="' + CARD_LINKS[a.getAttribute("href")] + '"]');
     if (!card) return;
     var tr = document.getElementById("track");
     if (tr) tr.scrollTo({ left: card.parentNode.offsetLeft - tr.offsetLeft, behavior: reduce ? "auto" : "smooth" });
+    if (window.HLMShelf) window.HLMShelf.openFor(card);
     if (card.getAttribute("aria-expanded") !== "true") card.click();
     document.getElementById("track").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
   });
@@ -319,12 +353,19 @@
 
   /* ---------- piles: what fell gathers at each section's end, alternating sides ---------- */
   var piles = [];
+  // piles sit opposite the rip on the same divider; otherwise they alternate
+  function pileSide(i) {
+    var rip = ((C.dimensions && C.dimensions.rips) || []).filter(function (r) { return r.between === i; })[0];
+    if (rip && rip.align === "left") return "right";
+    if (rip && rip.align !== "center") return "left";
+    return i % 2 ? "right" : "left";
+  }
   if (window.SeasonalMargins && window.SeasonalMargins.pile) {
     document.querySelectorAll("#frame > hr.staff").forEach(function (hr, i) {
       var slot = document.createElement("div");
       slot.className = "pile-slot";
       hr.parentNode.insertBefore(slot, hr);
-      piles.push(window.SeasonalMargins.pile(slot, { side: i % 2 ? "right" : "left", seed: 101 + i * 37 }));
+      piles.push(window.SeasonalMargins.pile(slot, { side: pileSide(i), seed: 101 + i * 37 }));
     });
   }
 
@@ -471,7 +512,7 @@
     car.addEventListener("focusout", function () { focused = false; });
     if (!reduce) {
       timer = setInterval(function () {
-        if (hovering || focused || drawerOpen || document.hidden || Date.now() < holdUntil) return;
+        if (hovering || focused || drawerOpen || document.hidden || Date.now() < holdUntil || car.classList.contains("is-shelf")) return;
         var r = car.getBoundingClientRect();
         if (r.bottom < 0 || r.top > window.innerHeight) return;
         var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
@@ -479,6 +520,42 @@
       }, every);
     }
     paint();
+
+    /* ---- the shelf: pull a book out to read its cover, put it back ---- */
+    function openBook(book, keepOthers) {
+      if (!book) return;
+      if (!keepOthers) slides.forEach(function (b) { if (b !== book) closeBook(b); });
+      book.classList.add("is-open");
+      book.querySelector(".spine").setAttribute("aria-expanded", "true");
+      setTimeout(function () {
+        var left = book.offsetLeft - track.offsetLeft - (track.clientWidth - book.offsetWidth) / 2;
+        track.scrollTo({ left: Math.max(0, left), behavior: reduce ? "auto" : "smooth" });
+        var f = book.querySelector(".cover .slide-card, .cover .shelve"); if (f && document.activeElement && document.activeElement.classList.contains("spine")) f.focus({ preventScroll: true });
+      }, reduce ? 0 : 380);
+    }
+    function closeBook(book) {
+      if (!book.classList.contains("is-open")) return;
+      book.classList.remove("is-open");
+      book.querySelector(".spine").setAttribute("aria-expanded", "false");
+    }
+    track.addEventListener("click", function (e) {
+      var sp = e.target.closest(".spine");
+      if (sp) { hold(); openBook(sp.closest(".book")); return; }
+      var sh = e.target.closest(".shelve");
+      if (sh) { var b = sh.closest(".book"); closeBook(b); b.querySelector(".spine").focus({ preventScroll: true }); }
+    });
+    function setView(v) {
+      car.classList.toggle("is-shelf", v === "shelf");
+      car.querySelectorAll("[data-view]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.view === v)); });
+      if (v === "covers") slides.forEach(closeBook);
+      try { localStorage.setItem("hlm-shelf", v); } catch (e) {}
+      setTimeout(paint, 600);
+    }
+    car.querySelector(".shelf-seg").addEventListener("click", function (e) { var b = e.target.closest("[data-view]"); if (b) setView(b.dataset.view); });
+    var savedView = null; try { savedView = localStorage.getItem("hlm-shelf"); } catch (e) {}
+    setView(savedView === "covers" ? "covers" : (CAR.view || "shelf"));
+    // used by links, the chat and the quick menu to pull a book before opening its panel
+    window.HLMShelf = { openFor: function (el) { var b = el && el.closest(".book"); if (b && car.classList.contains("is-shelf")) openBook(b); } };
   }
 
   /* ---------- video facade ---------- */
@@ -526,6 +603,7 @@
     qm.className = "qm";
     qm.setAttribute("aria-label", "Quick menu");
     function target(it) {
+      if (it.action === "donate") return { href: "#give" };
       if (it.action === "support") return { href: (C.support && C.support.url) || "#connect", ext: true };
       if (it.action === "omni") return C.omni && C.omni.url ? { href: C.omni.url, ext: true } : { href: "#omni" };
       return { href: it.action, ext: /^https?:/.test(it.action) };

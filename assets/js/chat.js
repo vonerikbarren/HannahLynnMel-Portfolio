@@ -27,7 +27,7 @@
       send: function (msg) {
         if (!endpoint) return Promise.reject(new Error("not-connected"));
         var fd = new FormData();
-        fd.append("_subject", "Chat message from " + msg.name + " (Hannah Lynn Mell site)");
+        fd.append("_subject", (msg.topic && msg.topic !== "Chat" ? msg.topic + " question from " : "Chat message from ") + msg.name + " (Hannah Lynn Mell site)");
         fd.append("_template", "table");
         fd.append("name", msg.name); fd.append("email", msg.email);
         fd.append("topic", msg.topic || "Chat"); fd.append("message", msg.message);
@@ -41,6 +41,7 @@
   /* ---------- intents ---------- */
   var INTENTS = [
     ["crisis", /\b(suicid\w*|kill (my ?self|me)|end (it|my life)|hurt (my ?self)|self[- ]?harm|overdos\w*|want to die|in crisis|emergency)\b/],
+    ["donate", /\b(donat\w*|give|giving|gift|support (you|hannah|the team)|patreon|team ?44|total resonance|fund\w*|sponsor\w*)\b/],
     ["handoff", /\b(message|contact|reach|email|book|booking|appointment|schedule a|talk to (you|hannah)|get in touch|leave (a )?(note|message)|hire|work with)\b/],
     ["highlight", /\b(collage|soul|highlight|featured|workshop)\b/],
     ["events", /\b(event|events|calendar|coming up|upcoming|what'?s on|when|next|this week|class(es)?|dates?)\b/],
@@ -124,6 +125,7 @@
     function openPanel(which) {
       var card = document.querySelector('.slide-card[data-panel="' + which + '"]');
       if (!card) return;
+      if (window.HLMShelf) window.HLMShelf.openFor(card);
       if (card.getAttribute("aria-expanded") !== "true") card.click();
       setTimeout(function () { document.getElementById("drawer").scrollIntoView({ behavior: "smooth", block: "start" }); }, 150);
     }
@@ -141,6 +143,11 @@
           say(R.crisis, [{ label: "988 Lifeline", url: "https://988lifeline.org/" }]);
           setQuick([]); return;
         case "handoff": startHandoff(); return;
+        case "donate":
+          say(R.donate || R.fallback, [
+            { label: "Ask about giving", run: function () { startHandoff("Donating"); } },
+            { label: "Visit the page", url: (C.donate && C.donate.pageUrl) || (C.support && C.support.url) || "#connect" }]);
+          return;
         case "hello": say("Hi there. Ask me about lessons, movement, healing spaces, what's coming up, or anything else.", []); setQuick(cfg.quick); return;
         case "events":
           var up = upcoming(3);
@@ -169,8 +176,8 @@
     }
 
     /* ---- hand-off: collect name, email, message; send to Hannah ---- */
-    function startHandoff() {
-      flow = { step: "name", data: { message: lastQuestion } };
+    function startHandoff(topic) {
+      flow = { step: "name", data: { message: lastQuestion, topic: topic || "Chat" } };
       setQuick([]);
       say("I'd love to hear from you. What's your name?");
       input.placeholder = "Your name";
@@ -187,7 +194,7 @@
           d.message ? [{ label: "Send as is", run: function () { if (flow && flow.step === "message") handle(d.message); } }] : []);
       } else if (flow.step === "message") {
         d.message = text; flow = null; input.placeholder = "Ask me anything…";
-        var msg = { name: d.name, email: d.email, message: d.message, topic: "Chat", transcript: transcript.slice(), page: location.href };
+        var msg = { name: d.name, email: d.email, message: d.message, topic: d.topic || "Chat", transcript: transcript.slice(), page: location.href };
         transport.send(msg).then(function () {
           say("Sent. Thank you, " + d.name.split(/\s+/)[0] + ". I'll write back to " + d.email + " soon.");
         }).catch(function (err) {
@@ -241,7 +248,16 @@
     launch.addEventListener("click", function () { openChat(panel.hidden); });
     root.querySelector(".chat-x").addEventListener("click", function () { openChat(false); launch.focus(); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panel.hidden && root.contains(document.activeElement)) { openChat(false); launch.focus(); } });
-    return { open: function () { openChat(true); } };
+    var api = {
+      open: function () { openChat(true); },
+      /* open the chat straight into a flow, e.g. openWith("donate") */
+      openWith: function (kind) {
+        openChat(true);
+        setTimeout(function () { setQuick([]); answer(kind); }, started ? 50 : 900);
+      }
+    };
+    window.HLMChatInstance = api;
+    return api;
   }
 
   /* Standalone only: not in an iframe, not in OmniReality mode. */

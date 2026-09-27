@@ -228,11 +228,13 @@ window.HANNAH = {
      * slides show a placeholder until their file exists. */
     carousel: {
       heading: "Hats, codes and healing.",
-      autoplaySeconds: 6,
+      autoplaySeconds: 6,   // covers view only; the shelf stays still
+      view: "shelf",        // "shelf" (spines, pull one out) | "covers" (all cards open)
       slides: [
         { type: "omni" },        // ⟐ card: opens the OmniReality loader in the panel (data: omni below)
         { type: "highlight" },   // opens the Highlight panel (data: highlight below)
         { type: "calendar" },    // opens the Calendar panel (data: calendar below)
+        { type: "donate" },      // opens the Give panel for Team44point4 & Total Resonance (data: donate below)
         { src: "assets/img/slide-1.jpg", alt: "Hannah in a cork-brimmed cap, smiling in a sunlit room", caption: "hats, codes, and healing", shape: "4:5" },
         { src: "assets/img/slide-2.jpg", alt: "Hannah in a bright checked scarf, mid-thought", caption: "", shape: "4:5" },
         { src: "assets/img/slide-3.jpg", alt: "Hannah laughing on a drive, in a tie-dye top", caption: "", shape: "4:5" },
@@ -312,6 +314,30 @@ window.HANNAH = {
     ]
   },
 
+  /* Giving: Team44point4 & Total Resonance. Fourth card in the carousel; its
+   * panel offers three ways to help: give directly, visit the page, or ask
+   * Hannah in the chat.
+   * directUrl: a donation link (PayPal.me, Stripe Payment Link, Donorbox…).
+   *   Use {amount} where the amount goes, e.g. "https://paypal.me/NAME/{amount}".
+   *   Empty = "Give directly" sends people to the Patreon page instead. */
+  donate: {
+    name: "Team44point4 & Total Resonance",
+    // Line-art logo cut out to transparency; the site colours the lines per theme.
+    logo: { src: "assets/img/team44point4-logo.png", alt: "Team44point4 logo: a grinning fox riding a bicycle" },
+    tagline: "Arts & education for social change.",
+    description: [
+      "Team44point4 & Total Resonance is Hannah's home for arts and education for social change.",
+      "Support keeps the music, the teaching and the gatherings going, and open to more people."
+    ],
+    pageUrl: "https://www.patreon.com/Team44point4",
+    pageLabel: "Visit Team44point4 on Patreon",
+    directUrl: "",
+    amounts: [10, 25, 50, 100],
+    currency: "$",
+    cardTitle: "Team44point4 & Total Resonance",
+    cardSub: "Arts & education for social change."
+  },
+
   /* ⟐ quick menu: the sticky ⟐ button, top right. action: a #section,
    * "support" (support.url), "omni" (omni.url, or the ⟐ section until it's set)
    * or any URL. */
@@ -319,7 +345,7 @@ window.HANNAH = {
   quickMenu: [
     { label: "Learn More About Hannah", note: "Her story and practice", action: "#about", color: "healing" },
     { label: "Contact Hannah", note: "A message straight to her inbox", action: "#connect", color: "music" },
-    { label: "Support Hannah", note: "Patreon · Team44point4 & Total Resonance", action: "support", color: "movement" },
+    { label: "Support Hannah", note: "Give to Team44point4 & Total Resonance", action: "donate", color: "movement" },
     { label: "Visit Hannah's ⟐Reality", note: "Step into OmniReality", action: "omni", color: "spark" }
   ],
 
@@ -329,8 +355,8 @@ window.HANNAH = {
   omni: {
     url: "",   // OmniReality link goes here
     title: "Enter OmniReality",
-    cardTitle: "Something is gathering",
-    cardSub: "A doorway, if you're curious.",
+    cardTitle: "Something is being realized.",
+    cardSub: "Join me, to my ⟐reality.",
     note: "Everything here, gathered into one point. OmniReality opens with a load screen just like this."
   },
 
@@ -356,6 +382,7 @@ window.HANNAH = {
       location: "I'm based in Boston and work in person there, and remotely anywhere.",
       price: "It depends on what you're looking for, and I keep some offerings on a sliding scale. Tell me what you have in mind and I'll send details.",
       thanks: "Thank you for being here. Take good care.",
+      donate: "Thank you for thinking of Team44point4 & Total Resonance. That's where my arts and education for social change lives. You can give on the Team44point4 page, or ask me anything about giving and I'll write back personally.",
       fallback: "I don't want to guess on that one. Leave me a note and I'll write back personally.",
       crisis: "I'm really glad you reached out. This chat can't give crisis support. If you're in the US, please call or text 988 (Suicide & Crisis Lifeline) now, or call 911 if you're in immediate danger. Outside the US, please contact your local emergency number."
     }
