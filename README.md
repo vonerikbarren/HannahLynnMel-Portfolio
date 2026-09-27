@@ -14,7 +14,7 @@ assets/js/client.js     the client object (all copy, links, palette, embed + sea
 assets/js/seasons.js    SeasonalMargins: falling seasonal symbols (standalone embed)
 assets/js/dimensions.js floating faux-3D shapes + rips to a starry night
 assets/js/panels.js   Highlight + Calendar cards and the drawer under the carousel
-assets/js/omni.js     ⟐ section: the site condensing into a loader that links to OmniReality
+assets/js/omni.js     ⟐ loader: the site condensing around ⟐; opens from the first carousel card
 assets/js/chat.js     chat (standalone only), automatic replies + hand-off to Hannah
 assets/js/main.js       renders the page from the client object; parallax, omni mode, video, form
 assets/css/styles.css   design tokens + layout (light and dark)
@@ -54,7 +54,7 @@ The contact form, the chat and the Save-a-seat sign-up form all deliver to hanna
 
 ## Light / dark
 
-Toggle in the top bar (remembered per visitor). Without a choice it follows the device setting. The gradient is identical in both modes.
+Light is the default for every first visit. The toggle in the top bar switches to dark and is remembered per visitor. The gradient is identical in both modes.
 
 ## Dimensions
 

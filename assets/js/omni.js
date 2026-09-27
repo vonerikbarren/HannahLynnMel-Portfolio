@@ -70,10 +70,32 @@
       "</section>";
   }
 
-  function init(C) {
-    var stage = document.getElementById("omni-stage");
+  /* Panel variant: lives in the drawer under the carousel, opened from the ⟐ card. */
+  function panelHTML(C) {
+    var O = C.omni || {}, live = !!O.url;
+    return '<div class="omni omni-in-panel">' +
+      '<div class="omni-stage" id="omni-stage">' +
+      '<div class="omni-rip" id="omni-rip"></div>' +
+      '<div class="omni-orbit" id="omni-orbit" aria-hidden="true">' + tokens(C).join("") + "</div>" +
+      (live ? '<a class="omni-core" href="' + esc(O.url) + '" target="_blank" rel="noopener">' : '<div class="omni-core">') +
+      '<span class="omni-mark">' + markSVG() + "</span>" +
+      '<span class="omni-text"><span class="omni-title" id="omni-title">' + esc(O.title || "Enter OmniReality") + "</span>" +
+      '<span class="mono omni-status" id="omni-status" aria-live="off">Condensing · 0%</span></span>' +
+      (live ? "</a>" : "</div>") +
+      "</div>" +
+      '<div class="omni-foot"><p class="omni-note">' + esc(O.note || "") + "</p>" +
+      (live ? '<a class="btn" href="' + esc(O.url) + '" target="_blank" rel="noopener">Enter OmniReality ↗</a>' : '<span class="chip chip-ghost">Link coming soon</span>') +
+      "</div></div>";
+  }
+
+  /* opts.timed: progress runs on a clock (drawer) instead of scroll (section). */
+  function init(C, opts) {
+    opts = opts || {};
+    var scope = opts.root || document;
+    var stage = scope.querySelector("#omni-stage");
     if (!stage) return;
-    var orbit = document.getElementById("omni-orbit"), status = document.getElementById("omni-status");
+    var startT = performance.now();
+    var orbit = scope.querySelector("#omni-orbit"), status = scope.querySelector("#omni-status");
     var els = [].slice.call(orbit.children);
     var n = els.length, seedR = 1;
     function r() { seedR = (seedR * 16807) % 2147483647; return seedR / 2147483647; }
@@ -91,7 +113,7 @@
     });
 
     // the starry-night rip (stars only, always night)
-    var ripHost = document.getElementById("omni-rip"), ripEl = null, lastW = 0;
+    var ripHost = scope.querySelector("#omni-rip"), ripEl = null, lastW = 0;
     function buildRip() {
       var w = stage.clientWidth, h = stage.clientHeight;
       if (Math.abs(w - lastW) < 40 && ripEl) return;
@@ -107,6 +129,7 @@
     var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(buildRip, 200); });
 
     function progress() {
+      if (opts.timed) return Math.min(1, (performance.now() - startT) / (opts.duration || 2600));
       var b = stage.getBoundingClientRect(), vh = window.innerHeight;
       // 0 when the stage top enters the viewport, 1 when its centre reaches the viewport centre
       var p = (vh - b.top) / (vh * 0.5 + b.height * 0.5);
@@ -116,6 +139,7 @@
 
     var t0 = performance.now(), visible = true, raf = 0, lastPct = -1;
     function frame(now) {
+      if (!stage.isConnected) { cancelAnimationFrame(raf); return; }
       var t = reduce ? 0 : (now - t0) / 1000;
       var W = stage.clientWidth, H = stage.clientHeight, cx = W / 2, cy = H / 2;
       var p = reduce ? 1 : ease(progress());
@@ -153,5 +177,5 @@
     if (reduce) window.addEventListener("resize", function () { frame(performance.now()); });
   }
 
-  window.Omni = { html: html, init: init };
+  window.Omni = { html: html, panelHTML: panelHTML, init: init };
 })();

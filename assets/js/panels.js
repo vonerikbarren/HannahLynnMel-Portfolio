@@ -38,6 +38,19 @@
   /* ---------------- cards (carousel slides) ---------------- */
 
   function card(slide, C) {
+    if (slide.type === "omni") {
+      var O = C.omni || {};
+      return '<button type="button" class="slide-card card-omni" data-panel="omni" aria-expanded="false" aria-controls="drawer" aria-label="OmniReality: peek inside">' +
+        '<span class="card-top"><span class="chip mono"><span aria-hidden="true"><span class="glyph">⟐</span>mniReality</span></span></span>' +
+        '<span class="omni-mini" aria-hidden="true"><span class="om-orbit"><i></i><i></i><i></i><i></i><i></i></span>' +
+        '<svg viewBox="0 0 120 120"><path d="M60 8 112 60 60 112 8 60Z" fill="none" stroke="url(#omc-g)" stroke-width="5" stroke-linejoin="round"/>' +
+        '<defs><linearGradient id="omc-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4320B"/><stop offset=".3" stop-color="#FF692A"/><stop offset=".65" stop-color="#8D1DE2"/><stop offset="1" stop-color="#2049DF"/></linearGradient></defs>' +
+        '<circle cx="60" cy="60" r="9" fill="#94E718"/></svg></span>' +
+        '<span class="card-title">' + esc(O.cardTitle || "Something is gathering") + "</span>" +
+        '<span class="card-sub">' + esc(O.cardSub || "A doorway, if you're curious.") + "</span>" +
+        '<span class="card-foot mono"><span>' + (O.url ? "Open" : "Preview") + '</span><span class="card-open">Peek inside <span aria-hidden="true">↓</span></span></span>' +
+        "</button>";
+    }
     if (slide.type === "highlight") {
       var H = C.highlight, d = H.date ? parse(H.date) : null;
       return '<button type="button" class="slide-card card-highlight" data-panel="highlight" aria-expanded="false" aria-controls="drawer" style="--pc:var(--c-' + esc(H.pillar) + ')">' +
@@ -296,10 +309,12 @@
     function show(which) {
       if (open === which) { close(); return; }
       open = which;
-      inner.innerHTML = '<div class="drawer-bar"><p class="mono">' + (which === "calendar" ? "Calendar" : "Highlight") + "</p>" +
+      inner.innerHTML = '<div class="drawer-bar"><p class="mono">' + (which === "calendar" ? "Calendar" : which === "omni" ? '<span class="glyph">⟐</span>mniReality' : "Highlight") + "</p>" +
         '<button type="button" class="drawer-close mono" aria-label="Close panel">Close ✕</button></div>' +
-        (which === "calendar" ? calendarPanel(C) : highlightPanel(C));
-      if (which === "calendar") wireCalendar(C, inner); else wireRsvp(C, inner);
+        (which === "calendar" ? calendarPanel(C) : which === "omni" ? (window.Omni ? window.Omni.panelHTML(C) : "") : highlightPanel(C));
+      if (which === "calendar") wireCalendar(C, inner);
+      else if (which === "omni") { if (window.Omni) requestAnimationFrame(function () { window.Omni.init(C, { root: inner, timed: true }); }); }
+      else wireRsvp(C, inner);
       inner.querySelector(".drawer-close").addEventListener("click", function () {
         var btn = document.querySelector('.slide-card[data-panel="' + open + '"]'); close(); if (btn) btn.focus();
       });

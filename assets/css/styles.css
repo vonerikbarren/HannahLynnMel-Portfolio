@@ -1003,3 +1003,42 @@ button.textlink { border: 0; background: var(--confluence) no-repeat 0 100% / 10
 .qm-note { color: var(--ink-3); text-transform: none; letter-spacing: 0.02em; font-size: 0.66rem; }
 .qm-arrow { color: var(--ink-3); transition: transform .2s; }
 .qm-item:hover .qm-arrow { transform: translateX(3px); color: var(--t-writing); }
+
+/* ---------- ⟐ card (first in the carousel) ---------- */
+.card-omni {
+  color: #FFFFFF;
+  background:
+    radial-gradient(1.2px 1.2px at 18% 22%, #FFF 99%, transparent), radial-gradient(1px 1px at 72% 14%, #FFF 99%, transparent),
+    radial-gradient(1.4px 1.4px at 84% 58%, #E9D6FF 99%, transparent), radial-gradient(1px 1px at 30% 74%, #FFF 99%, transparent),
+    radial-gradient(1px 1px at 56% 40%, #DCE3FF 99%, transparent), radial-gradient(1.3px 1.3px at 12% 52%, #FFF 99%, transparent),
+    radial-gradient(1px 1px at 90% 86%, #FFF 99%, transparent), radial-gradient(1px 1px at 44% 90%, #E8FFC9 99%, transparent),
+    radial-gradient(60% 45% at 30% 30%, rgba(141, 29, 226, 0.45), transparent 70%),
+    radial-gradient(60% 45% at 80% 75%, rgba(32, 73, 223, 0.4), transparent 70%),
+    linear-gradient(170deg, #070519, #140C38 60%, #2A1A55);
+}
+.card-omni .chip { color: #E9D6FF; }
+.card-omni .card-title { margin-top: 0; }
+.omni-mini { position: relative; width: 58%; aspect-ratio: 1; margin: auto auto 6px; display: grid; place-items: center; }
+.omni-mini svg { width: 46%; height: 46%; filter: drop-shadow(0 0 14px rgba(141, 29, 226, 0.85)) drop-shadow(0 0 4px rgba(148, 231, 24, 0.6)); }
+.om-orbit { position: absolute; inset: 0; border-radius: 50%; border: 1px dashed rgba(255, 255, 255, 0.18); transform: rotateX(62deg); }
+.om-orbit i { position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; margin: -4.5px; border-radius: 50%; transform: rotate(calc(var(--k) * 72deg)) translateX(var(--rr, 46%)); }
+.om-orbit i:nth-child(1) { --k: 0; background: #F4320B; }
+.om-orbit i:nth-child(2) { --k: 1; background: #2049DF; }
+.om-orbit i:nth-child(3) { --k: 2; background: #94E718; }
+.om-orbit i:nth-child(4) { --k: 3; background: #FF692A; border-radius: 2px; }
+.om-orbit i:nth-child(5) { --k: 4; background: #8D1DE2; }
+.om-orbit i { --rr: calc(var(--s, 1) * 70px); }
+@media (prefers-reduced-motion: no-preference) {
+  .om-orbit { animation: om-spin 9s linear infinite; }
+  .card-omni:hover .om-orbit { animation-duration: 3s; }
+}
+@keyframes om-spin { to { transform: rotateX(62deg) rotateZ(360deg); } }
+.card-omni:hover .omni-mini svg { transform: rotate(90deg); transition: transform .6s cubic-bezier(.5,1.6,.4,1); }
+.omni-mini svg { transition: transform .6s ease; }
+
+/* the loader inside the drawer */
+.omni-in-panel { padding: 0; }
+.omni-in-panel .omni-stage { margin-inline: 0; border: 0; height: clamp(360px, 44vw, 480px); border-radius: 3px; -webkit-mask-image: none; mask-image: none; }
+.omni-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin-top: 16px; }
+.omni-foot .omni-note { margin: 0; }
+.card-omni .chip, .drawer-bar .glyph, .drawer-bar p:has(.glyph) { text-transform: none; letter-spacing: 0.04em; }

@@ -176,6 +176,7 @@ window.HANNAH = {
   },
 
   theme: {
+    default: "light", // first visit always opens in light; the toggle still switches to dark
     paper: "grid",   // "grid" | "lined" (lined notebook paper)
     palette: {
       writing: "#F4320B",  // primary accent
@@ -229,6 +230,7 @@ window.HANNAH = {
       heading: "Hats, codes and healing.",
       autoplaySeconds: 6,
       slides: [
+        { type: "omni" },        // ⟐ card: opens the OmniReality loader in the panel (data: omni below)
         { type: "highlight" },   // opens the Highlight panel (data: highlight below)
         { type: "calendar" },    // opens the Calendar panel (data: calendar below)
         { src: "assets/img/slide-1.jpg", alt: "Hannah in a cork-brimmed cap, smiling in a sunlit room", caption: "hats, codes, and healing", shape: "4:5" },
@@ -321,10 +323,14 @@ window.HANNAH = {
     { label: "Visit Hannah's ⟐Reality", note: "Step into OmniReality", action: "omni", color: "spark" }
   ],
 
-  /* ⟐ OmniReality: the site condensing into a loader, before About. */
+  /* ⟐ OmniReality: the site condensing into a loader. Lives behind the ⟐ card
+   * (first in the carousel) and opens in the panel under it, so people find it
+   * out of curiosity rather than having it in the page. */
   omni: {
     url: "",   // OmniReality link goes here
     title: "Enter OmniReality",
+    cardTitle: "Something is gathering",
+    cardSub: "A doorway, if you're curious.",
     note: "Everything here, gathered into one point. OmniReality opens with a load screen just like this."
   },
 
@@ -366,17 +372,17 @@ window.HANNAH = {
       { type: "pyramid", x: 0.06, y: 1.45, size: 96,  depth: 0.8,  c1: "movement", c2: "writing", spin: -0.8 }
     ],
     /* Rips sit in the gaps between sections, on the dividers
-     * (0 = after the hero, 1 = after ⟐, 2 = after About, 3 = after Offerings,
-     *  4 = after Writing, 5 = after Video, 6 = after Listen).
+     * (0 = after the hero, 1 = after About, 2 = after Offerings,
+     *  3 = after Writing, 4 = after Video, 5 = after Listen).
      * scene: "sky" | "mountain" | "beach" | "tree". Day in light mode,
      * night in dark mode. layers = torn scraps pasted on top, collage-style. */
     rips: [
-      { between: 2, scene: "mountain", align: "right", width: 440, height: 170, rotate: -4, seed: 11,
+      { between: 1, scene: "mountain", align: "right", width: 440, height: 170, rotate: -4, seed: 11,
         layers: [{ scene: "sky", width: 130, height: 80, left: "-40px", top: "-18px", rotate: -14 }] },
-      { between: 3, scene: "sky", align: "left", width: 380, height: 150, rotate: 5, seed: 23 },
-      { between: 4, scene: "beach", align: "right", offset: "10%", width: 420, height: 160, rotate: 3, seed: 5,
+      { between: 2, scene: "sky", align: "left", width: 380, height: 150, rotate: 5, seed: 23 },
+      { between: 3, scene: "beach", align: "right", offset: "10%", width: 420, height: 160, rotate: 3, seed: 5,
         layers: [{ scene: "tree", width: 120, height: 110, right: "-30px", bottom: "-26px", rotate: 11 }] },
-      { between: 6, scene: "tree", align: "center", width: 360, height: 170, rotate: -3, seed: 41 }
+      { between: 5, scene: "tree", align: "center", width: 360, height: 170, rotate: -3, seed: 41 }
     ]
   },
 

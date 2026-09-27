@@ -120,10 +120,6 @@
 
   html += '<hr class="staff" aria-hidden="true">';
 
-  if (window.Omni) {
-    html += window.Omni.html(C);
-    html += '<hr class="staff" aria-hidden="true">';
-  }
 
   html += '<section class="sec" id="about"><p class="label mono">About</p><div class="body">' +
     '<h2 class="h2">' + esc(C.about.heading) + "</h2>" +
@@ -284,7 +280,18 @@
   }
 
   /* ---------- ⟐ OmniReality loader ---------- */
-  if (window.Omni) window.Omni.init(C);
+  // Any link to #omni (top menu, quick menu) opens the ⟐ card's panel under the carousel.
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('a[href="#omni"]');
+    if (!a) return;
+    e.preventDefault();
+    var card = document.querySelector('.slide-card[data-panel="omni"]');
+    if (!card) return;
+    var tr = document.getElementById("track");
+    if (tr) tr.scrollTo({ left: card.parentNode.offsetLeft - tr.offsetLeft, behavior: reduce ? "auto" : "smooth" });
+    if (card.getAttribute("aria-expanded") !== "true") card.click();
+    document.getElementById("track").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  });
 
   /* ---------- paper: grid or lined ---------- */
   function setPaper(v) {
