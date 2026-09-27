@@ -14,7 +14,7 @@
 <body>
   <!-- layers: colour-field wallpaper (20–50%) → grid → floating shapes → page → seasonal symbols -->
   <script>/* light is the default; a visitor's own toggle choice is remembered */
-  (function(){var t=null;try{t=localStorage.getItem("hlm-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light")})();</script>
+  (function(){var t=null;try{t=localStorage.getItem("hlm-theme");if(t!=="dark"&&t!=="light"){t="light";localStorage.setItem("hlm-theme",t)}}catch(e){t="light"}document.documentElement.setAttribute("data-theme",t)})();</script>
   <div class="wall" id="wall" aria-hidden="true"></div>
   <div class="grid" id="grid" aria-hidden="true"></div>
   <div class="dims" id="dims" aria-hidden="true"></div>

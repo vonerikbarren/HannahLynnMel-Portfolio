@@ -62,7 +62,7 @@ The contact form, the chat and the Save-a-seat sign-up form all deliver to hanna
 
 ## Light / dark
 
-Light is the default for every first visit. The toggle in the top bar switches to dark and is remembered per visitor. The gradient is identical in both modes.
+Light is the default: a first visit saves `hlm-theme = "light"` in localStorage. The toggle in the top bar updates that value, so each visitor's choice (light or dark) is what they see next time. The gradient is identical in both modes.
 
 ## Dimensions
 
