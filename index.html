@@ -12,9 +12,11 @@
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-  <!-- layers: colour-field wallpaper (20–50%) → grid → seasonal margins → page -->
+  <!-- layers: colour-field wallpaper (20–50%) → grid → floating shapes → page → seasonal symbols -->
+  <script>try{var t=localStorage.getItem("hlm-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
   <div class="wall" id="wall" aria-hidden="true"></div>
   <div class="grid" id="grid" aria-hidden="true"></div>
+  <div class="dims" id="dims" aria-hidden="true"></div>
   <canvas id="season" aria-hidden="true"></canvas>
 
   <main class="frame" id="frame">
@@ -23,6 +25,10 @@
 
   <script src="assets/js/client.js"></script>
   <script src="assets/js/seasons.js"></script>
+  <script src="assets/js/dimensions.js"></script>
+  <script src="assets/js/panels.js"></script>
+  <script src="assets/js/omni.js"></script>
+  <script src="assets/js/chat.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

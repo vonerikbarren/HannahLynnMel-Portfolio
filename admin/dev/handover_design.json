@@ -1,0 +1,238 @@
+{
+  "$purpose": "Design handover for Hannah Lynn Mell's landing site, so OmniReality (and anyone building it, including Claude) can match its look, motion and voice. Values are taken from assets/css/styles.css and assets/js/*.js. When this file and the code disagree, the code wins.",
+  "version": "V03 · 2026-09-26",
+  "client": {
+    "name": "Hannah Lynn Mell",
+    "monogram": "HLM",
+    "tagline": "Confluent curator of healing spaces.",
+    "location": "Boston · in person & remote",
+    "roles": ["Writer", "Music educator", "Movement choreographer", "Interfaith chaplain", "EMDR-trained", "OG nerd"],
+    "qualities": ["Resilient", "Positive", "Adaptive", "Grounded"],
+    "practice_note": "She makes soul collage: layers of meaning pasted over each other. The visual system borrows that: torn paper, overlapping scraps, windows cut into the grid."
+  },
+
+  "concept": {
+    "name": "Confluence",
+    "summary": "Five colour currents (her palette) meet in one gradient. Bold colour lives in the wallpaper, her name and a few accents; everything else is a quiet, writerly page on graph (or lined) paper, with rips in the paper that open onto other scenes.",
+    "principles": [
+      "One loud thing per view; the rest stays quiet and typographic.",
+      "The gradient is identical in light and dark modes; only grounds and inks swap.",
+      "Paper is the metaphor: grid or lined sheets, torn edges, collage scraps, hairline rules.",
+      "Depth through parallax: far things are slow and blurred, near things are fast and sharp.",
+      "Motion is light and optional: every animation has a prefers-reduced-motion fallback."
+    ]
+  },
+
+  "color": {
+    "palette": {
+      "writing":  { "hex": "#F4320B", "role": "primary accent (red-orange)", "pillar": "Writing & Reflection" },
+      "music":    { "hex": "#2049DF", "role": "secondary accent (blue)", "pillar": "Music & Education" },
+      "spark":    { "hex": "#94E718", "role": "highlight (lime), used sparingly: live dots, today ring, selection, focus in dark, the ⟐ core", "pillar": "Community & live" },
+      "healing":  { "hex": "#8D1DE2", "role": "deep accent (violet)", "pillar": "Spiritual & Mental Health Support" },
+      "movement": { "hex": "#FF692A", "role": "warm accent (orange)", "pillar": "Movement & Wellness" }
+    },
+    "gradients": {
+      "confluence": {
+        "css": "linear-gradient(100deg, #F4320B 0%, #FF692A 26%, #8D1DE2 62%, #2049DF 100%)",
+        "use": "Her name (background-clip text, 240% size, each line offset 0/50/100%), drop cap, Muse title, button underline/hover fill, avatar ring, nav underline, progress bars, gradient borders on panels and chat, the ⟐ mark stroke.",
+        "same_in_dark_mode": true
+      },
+      "gradient_border_recipe": "background: linear-gradient(<surface>, <surface>) padding-box, <confluence> border-box; border: 1px solid transparent;",
+      "video_poster": "radial-gradient(120% 90% at 85% 10%, rgba(148,231,24,.35), transparent 45%), linear-gradient(135deg, #2049DF 0%, #8D1DE2 55%, #F4320B 100%)",
+      "highlight_card": "radial-gradient(circle at 84% 16%, rgba(148,231,24,.9) 0 6%, transparent 6.5%), radial-gradient(90% 70% at 100% 100%, rgba(32,73,223,.85), transparent 70%), <confluence>",
+      "flyer": "radial-gradient(circle at 82% 16%, #94E718 0 7%, transparent 7.5%), radial-gradient(110% 70% at 0% 100%, <pillar>, transparent 62%), radial-gradient(80% 60% at 100% 60%, rgba(244,50,11,.55), transparent 70%), linear-gradient(160deg, #1B1530, #2A1450 60%, #1B1530)"
+    },
+    "light": {
+      "ground": "#F7F5FB",
+      "ink": "#1B1530",
+      "ink_2": "#4A4362",
+      "ink_3": "#6E6786",
+      "hair": "rgba(27,21,48,.16)",
+      "hair_strong": "rgba(27,21,48,.32)",
+      "grid_line": "rgba(27,21,48,.055)",
+      "grid_line_major": "rgba(27,21,48,.10)",
+      "surface_alpha": 0.8,
+      "text_on_ground": { "writing": "#C4280A", "music": "#2049DF", "healing": "#8D1DE2", "movement": "#B8460F", "spark": "#467A00" },
+      "focus": "#2049DF",
+      "button": { "bg": "#1B1530", "ink": "#F7F5FB" },
+      "rip_paper": "#FFFFFF"
+    },
+    "dark": {
+      "ground": "#13101D",
+      "ink": "#F2EFF9",
+      "ink_2": "#C9C3DB",
+      "ink_3": "#9C95B3",
+      "hair": "rgba(242,239,249,.16)",
+      "hair_strong": "rgba(242,239,249,.34)",
+      "grid_line": "rgba(242,239,249,.05)",
+      "grid_line_major": "rgba(242,239,249,.09)",
+      "surface_alpha": 0.74,
+      "text_on_ground": { "writing": "#FF7A57", "music": "#8098FF", "healing": "#C28DFF", "movement": "#FF9A63", "spark": "#B6F25A" },
+      "focus": "#B6F25A",
+      "button": { "bg": "#F2EFF9", "ink": "#13101D" },
+      "rip_paper": "#231D33"
+    },
+    "neutrals_note": "Neutrals are violet-biased (never pure grey), pulled toward the palette.",
+    "selection": { "background": "#94E718", "color": "#1B1530" }
+  },
+
+  "typography": {
+    "families": {
+      "display": { "family": "Bodoni Moda", "source": "Google Fonts", "axes": "ital, opsz 6..96, wght 400..700", "fallback": "Didot, 'Bodoni 72', 'Times New Roman', serif", "use": "Name, headings, card titles, big numerals. Italic for voice moments." },
+      "body":    { "family": "Literata", "source": "Google Fonts", "axes": "ital, opsz 7..72, wght 300..600", "fallback": "'Iowan Old Style', 'Palatino Linotype', Georgia, serif", "use": "Running text, nav links (italic), taglines." },
+      "utility": { "family": "IBM Plex Mono", "source": "Google Fonts", "weights": [400, 500], "fallback": "ui-monospace, 'SF Mono', Menlo, Consolas, monospace", "use": "Labels, eyebrows, chips, counters, meta. 0.75rem, uppercase, letter-spacing .08em." },
+      "symbol":  { "stack": "'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', 'Noto Sans Math', 'DejaVu Sans'", "use": "The ⟐ glyph in labels/nav. Large ⟐ marks are drawn as SVG." }
+    },
+    "google_fonts_url": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=IBM+Plex+Mono:wght@400;500&family=Literata:ital,opsz,wght@0,7..72,300..600;1,7..72,300..600&display=swap",
+    "scale": {
+      "hero_name":   { "size": "clamp(3.4rem, 14.5vw, 10rem)", "family": "display", "weight": 500, "line_height": 0.84, "tracking": "-0.025em", "opsz": 96, "notes": "Three stacked lines (Hannah / Lynn / Mell); line 2 italic 400 indented 0.9em, line 3 indented 0.32em; gradient text." },
+      "h2":          { "size": "clamp(2rem, 4.4vw, 3.2rem)", "family": "display", "weight": 500, "line_height": 1.04, "tracking": "-0.015em", "max_width": "20ch" },
+      "muse_title":  { "size": "clamp(2.4rem, 6vw, 4.2rem)", "family": "display italic", "line_height": 0.98 },
+      "panel_title": { "size": "clamp(1.8rem, 3.4vw, 2.6rem)", "family": "display", "weight": 500 },
+      "card_title":  { "size": "clamp(1.9rem, 3vw, 2.5rem)", "family": "display italic", "line_height": 0.98 },
+      "pillar_name": { "size": "1.7rem", "family": "display italic", "weight": 400 },
+      "tagline":     { "size": "clamp(1.35rem, 2.6vw, 1.85rem)", "family": "body italic", "weight": 300, "line_height": 1.3 },
+      "body":        { "size": "1.0625rem", "family": "body", "line_height": 1.65, "measure": "64ch" },
+      "label":       { "size": "0.75rem", "family": "utility", "case": "uppercase", "tracking": "0.08em" },
+      "chip":        { "size": "0.62rem", "family": "utility", "case": "uppercase", "tracking": "0.08em" }
+    },
+    "details": [
+      "Drop cap on the first About paragraph: display face, 4.6em, gradient-filled.",
+      "Headings use text-wrap: balance; prose uses text-wrap: pretty and hanging punctuation.",
+      "Big numerals (calendar next-up, flyer date) are display face with the confluence gradient.",
+      "Colophon in the footer names the typefaces (she loves typography)."
+    ]
+  },
+
+  "layout": {
+    "frame": { "max_width": "1040px", "side_padding": "clamp(20px, 5.5vw, 76px)", "border": "1px hairline left and right", "surface": "rgba(ground, surface_alpha) + backdrop-filter: blur(10px) saturate(1.1)", "body_gutter": "16px" },
+    "sections": { "grid": "150px label column + 1fr body; one column under 820px", "padding_block": "clamp(56px, 8vw, 104px)", "label": "mono uppercase, sticky at top: 24px" },
+    "dividers": "Between sections: a five-line music staff (17px tall, 1px lines every 4px, faded at the ends).",
+    "margins": "Outside the frame the wallpaper shows; the seasonal symbols fall there.",
+    "breakpoints": { "stack_sections": "820px", "stack_hero": "900px", "carousel_mobile": "700px", "compact_header": "520px" },
+    "radii": { "default": "2–3px (nearly square)", "cards": "3px", "pills": "999px", "arch": "999px 999px 3px 3px (hero portrait and every other carousel photo)" },
+    "shadows": { "card_hover": "0 14px 30px rgba(27,21,48,.18)", "floating": "0 18px 48px rgba(27,21,48,.22)", "rip": "drop-shadow(0 10px 18px rgba(11,8,32,.28))" }
+  },
+
+  "surfaces_and_layers": {
+    "stack_order": ["wallpaper colour fields (z0)", "grid / lined paper (z1)", "floating 3D shapes (z2)", "page frame (z3)", "seasonal symbols canvas (z4)", "Spotify dock + chat (z10–11)", "sticky header (z20 within the frame)"],
+    "wallpaper": {
+      "fields": [
+        { "color": "#F4320B", "left": "-12vw", "top": "-8vh",  "size": "70vmax", "opacity": 0.5,  "parallax_depth": 0.06 },
+        { "color": "#2049DF", "left": "68vw",  "top": "6vh",   "size": "64vmax", "opacity": 0.4,  "parallax_depth": 0.14 },
+        { "color": "#8D1DE2", "left": "60vw",  "top": "62vh",  "size": "78vmax", "opacity": 0.45, "parallax_depth": 0.22 },
+        { "color": "#FF692A", "left": "-18vw", "top": "88vh",  "size": "66vmax", "opacity": 0.35, "parallax_depth": 0.10 },
+        { "color": "#94E718", "left": "30vw",  "top": "150vh", "size": "48vmax", "opacity": 0.2,  "parallax_depth": 0.30 }
+      ],
+      "field_css": "radial-gradient(circle at 50% 50%, <color> 0%, transparent 66%)",
+      "opacity_range": [0.2, 0.5],
+      "drift": "48s ease-in-out infinite alternate: translate ±1.5vw, -2vh, rotate 4deg"
+    },
+    "paper": {
+      "grid":  { "minor": "32px, 1px lines at grid_line", "major": "128px, 1px lines at grid_line_major", "parallax": "background-position-y = -scrollY * 0.12" },
+      "lined": { "lines": "horizontal only, same spacing", "margin_rule": "1px rgba(244,50,11,.35) with a 3px echo at rgba(244,50,11,.18), inside the frame's left padding" },
+      "switch": "client.theme.paper = 'grid' | 'lined'"
+    },
+    "embed_mode_omni": { "trigger": "?mode=omni", "page_wash": "ground at 20% opacity", "frame_surface": "50% opacity", "grid": "strengthened to rgba(127,120,150,.14)/.24", "chat": "hidden (OmniFeed handles chat)" }
+  },
+
+  "components": {
+    "header": {
+      "content": "Avatar (40px, 2px confluence ring, 2px ground inner border) + 'HLM' mono 0.3em tracking; italic nav links with a gradient underline that grows on hover; light/dark toggle (56×30 pill, gradient knob with sun/moon).",
+      "sticky": "Sticks to the top; once scrolled >24px it tightens (padding 12px), turns to ground at 55% with the same grid pinned to the viewport (background-attachment: fixed, synced to the grid parallax), blur 10px, and fades out at the bottom via mask-image (#000 72% → transparent)."
+    },
+    "hero": {
+      "order": ["location eyebrow with lime live dot", "carousel", "drawer (opens under carousel)", "name + tagline + roles + actions | arched portrait"],
+      "roles_list": "mono labels, each with a 12×2px dash in its pillar colour",
+      "portrait": "4:5 arch with a 1px confluence border"
+    },
+    "buttons": {
+      "primary": "mono uppercase 0.78rem, ink bg, 14×22 padding, 2px radius; a 3px confluence bar at the bottom that fills the whole button on hover (text turns white)",
+      "text_link": "italic body text with a 1px confluence underline (2px on hover)",
+      "round_icon": "42px circle, 1px hair-strong border, fills ink on hover"
+    },
+    "chips": "mono 0.62rem uppercase, 1px currentColor border, 999px radius; 'ghost' variant is dashed at 70% opacity (used for Sample / Coming soon).",
+    "carousel": {
+      "slides": ["Highlight card", "Calendar card", "photos (every third one arched)", "placeholders"],
+      "slide_width": "min(42%, 320px); 78% on phones", "aspect": "4:5", "gap": "14px",
+      "controls": "← counter (01 / 08, tabular) gradient progress bar →",
+      "autoplay": "6s, pauses on hover, focus, open drawer, hidden tab, or 12s after any interaction"
+    },
+    "highlight_card": "Confluence card with a lime dot, a translucent torn-paper strip across the middle (collage), chips at the top, italic display title, date/time footer with 'Details ↓'.",
+    "calendar_card": "Paper card with a 16px grid texture, month label, mini month of dots (event days in pillar colour, today ringed in lime), a big gradient numeral for the next date, 'Open ↓'.",
+    "drawer": {
+      "behavior": "Opens under the carousel with grid-template-rows 0fr → 1fr (.55s cubic-bezier(.2,.8,.2,1)); contents fade/slide in. Escape, Close or re-clicking the card closes it.",
+      "frame": "gradient-bordered panel on ground at 95%",
+      "split": "two columns (1fr / 1.1fr), stacked under 820px",
+      "highlight_panel": "left: flier (4:5, rotated -1.5deg, deep shadow; typographic fallback built from data); right: kicker, title, italic subtitle, facts table (When / Where / Format / Cost / Space with mono labels), description, CTA + text link",
+      "calendar_panel": "left: legend (dashed box, colour swatches + Today ring) → month header with arrows → 7-column day grid (days are buttons with dots, today ring, selected = inverted, highlight day = gradient border, past days 50%) → selected-day state; right: 'Coming up' agenda of 6 with big numerals and a pillar-colour bar"
+    },
+    "rips": {
+      "construction": "A torn outline: 120-point polygon with low-frequency harmonics (sin 2a, 3a, 5a) for an organic shape, alternating 2.5–6% inward 'fibre' notches, ends pinched like a tear. An outer copy 9px larger in rip_paper colour with the grid printed on it forms the torn paper edge. Soft drop shadow, slight rotation (-9..9deg).",
+      "inner_glow": "inset 0 0 22px rgba(141,29,226,.45), inset 0 0 4px rgba(148,231,24,.5)",
+      "placement": "Only in the gaps between sections (on the staff dividers), never under text.",
+      "scenes": {
+        "sky": "day: blue gradient (#4F86EC → #8DBBFA → #E6F1FF), warm sun glow, drifting clouds; night: stars + nebula",
+        "mountain": "two ridges (back #9DB2D6, front #5F7FA8) with snowcaps, lake with mirrored reflection and shimmer; night: violet ridges, moon",
+        "beach": "sea (#1F7CC4 → #4CB5E6), moving foam line, sand (#F3DDB0 → #E4C088), a beach ball; night: moonlit",
+        "tree": "a whole branching tree on a green hill; foliage follows the current season (spring blossoms, summer greens, fall reds/oranges, winter bare with snow); night: silhouette under stars",
+        "stars": "night only, even in light mode: deep sky (#070519 → #140C38 → #2A1A55), nebula in her colours, twinkling stars with sparkle crosses on the brightest, a shooting star every 5–12s"
+      },
+      "collage_layers": "Smaller torn scraps pasted over a rip's corner, each showing a different scene (e.g. sky over mountain, tree over beach).",
+      "parallax": "rip moves -0.03 × offset from viewport centre; the scene inside moves more (0.1), clamped, so it reads as a window."
+    },
+    "omni_loader": {
+      "section": "⟐ OmniReality, between the hero and About",
+      "stage": "grid/lined paper band (clamp 420–560px tall), edges faded, with a large 'stars' rip in the middle",
+      "mark": "SVG diamond (outer 5px confluence stroke, inner 1.2px at 55%) with a lime centre dot; glow drop-shadow(0 0 18px rgba(141,29,226,.8)); rotates 0→180deg and scales .7→1 with progress; pulses when ready",
+      "tokens": ["avatar", "highlight card", "calendar", "arched photo", "maple leaf", "sphere", "isometric cube", "gradient ring", "Spotify equalizer", "chat bubble", "video play tile", "Muse 'M'", "HLM badge", "four pillar dashes", "music staff", "torn sky scrap"],
+      "motion": "Tokens start scattered and spiral into three elliptical orbits (radii 1 / .87 / .75 of min(44% width, 380px) × min(42% height, 200px); speeds .22/.16/.11, middle ring counter-rotates). Progress is scroll-linked (0 when the stage enters, 1 at viewport centre) with easeInOutCubic. Front of the orbit is larger. Status reads 'Condensing · N%' then 'Ready'.",
+      "match_in_omnireality": "OmniReality's own load screen should reuse this: same mark, same token set, same orbit geometry, stars background."
+    },
+    "seasonal_margins": {
+      "where": "Falling in the side margins outside the frame (full width at low alpha when margins are narrow); plus a light flurry of ~10 across the page as each section scrolls into view",
+      "sets": { "spring": "five-petal flowers, daisies, cherry blossoms, tulips", "summer": "beach balls and striped beach chairs", "fall": "maple leaves in #F4320B, #FF692A, #E9A317, #B5200A, #C94E12", "winter": "six-armed snowflakes with a white core and a blue/violet outline" },
+      "motion": "14–34px/s fall, sine sway 8–30px, slow spin, leaves flip (scaleX cos). Size 16–32px. Opacity .55–.9.",
+      "breeze": "The pointer pushes pieces away (radius 130px) and along its path; drag settles them back. Fast pointer moves leave faint curved wind streaks; a tap on touch sends an expanding gust ring (520px/s) with radial streaks. The floating 3D shapes lean away from the pointer by up to 60px × depth.",
+      "auto_season": "by month, northern hemisphere; switcher in the footer"
+    },
+    "shapes_3d": {
+      "count": 4,
+      "types": { "sphere": "layered radial gradients with a specular highlight and inset shadow", "cube": "CSS 3D six faces, translucent gradient glass, 1px white edges", "torus": "conic gradient ring masked to an annulus, tilted rotateX(64deg)", "pyramid": "four clip-path triangles in 3D" },
+      "depth": "0.1 (far: big, blurred up to 2px+, slow) to 0.9 (near: sharp, fast); scale .55 + depth×.9; they loop vertically and rotate with scroll"
+    },
+    "spotify_dock": "Bottom-right pill 'Listen' with a lime equaliser; opens a gradient-bordered panel with the Spotify embed; one iframe that never moves so playback survives scrolling.",
+    "chat": "Bottom-left pill with her avatar 'Chat with Hannah'. Panel 370×540 max, gradient border, grid-textured log, Hannah's bubbles on ground with hairline border (4px corner at the tail), visitor bubbles inverted; mono chip buttons; round gradient send button. Standalone site only.",
+    "footer": "Margins season switcher, Paper switcher, colophon in italic, © line.",
+    "scrollbar": "6px, transparent track; idle thumb rgba(110,100,140,.18); while scrolling the thumb turns into the confluence gradient, fading back 900ms after scrolling stops."
+  },
+
+  "motion": {
+    "easings": { "standard": "ease", "drawer": "cubic-bezier(.2,.8,.2,1)", "toggle_knob": "cubic-bezier(.5,1.6,.4,1) (springy)", "loader": "easeInOutCubic" },
+    "durations": { "hover": "200–300ms", "underline_grow": "350ms", "theme_change": "400ms", "drawer": "550ms", "carousel_autoplay": "6s", "scrollbar_fade": "900ms" },
+    "parallax_rates": { "wallpaper_fields": "0.06–0.30 of scroll", "grid": "0.12", "hero_name_lines": "x: -0.05 / +0.09 / -0.03 of scroll", "rips": "-0.03 (frame) / 0.10 (scene)", "shapes": "depth × scroll, eased 8%/frame" },
+    "reduced_motion": "No drift, no falling, no orbit spin, no autoplay; the loader shows its finished state; parallax off."
+  },
+
+  "voice_and_copy": {
+    "tone": "Warm, grounded, plainspoken, a little playful; first person when it's Hannah speaking.",
+    "casing": "Headings in sentence case; Substack titles keep her lowercase style.",
+    "sample_lines": ["Confluent curator of healing spaces.", "Four currents, one practice.", "Where music, movement, spirit and the page run together.", "Hats, codes and healing.", "Everything here, gathered into one point."],
+    "chat_persona": "Speaks as Hannah, labelled 'Automatic replies · your messages reach me directly'. Crisis language always gets 988 / 911 resources.",
+    "avoid": ["clinical or salesy language", "promising outcomes", "inviting health details in chat"]
+  },
+
+  "accessibility": [
+    "Visible focus ring: 2px solid focus colour, 3px offset.",
+    "Pillar colours have separate text-safe variants per theme (text_on_ground).",
+    "All motion respects prefers-reduced-motion.",
+    "Decorative layers are aria-hidden; the calendar days and cards are real buttons with labels; Escape closes panels and chat."
+  ],
+
+  "assets": {
+    "photos": "assets/img: avatar.jpg, hero.jpg, about.jpg, slide-1..3.jpg (from HLM01–HLM05); placeholders for slide-4..6, music/movement/healing/writing, highlight-flyer.",
+    "links": { "youtube": "https://www.youtube.com/@hannahlynnmell", "substack": "https://mondaymorningmuse.substack.com/", "linktree": "https://linktr.ee/Hannahlynnmell", "instagram": "https://www.instagram.com/hannahlynnmell", "spotify_profile": "https://open.spotify.com/user/1299316400" }
+  },
+
+  "tokens_css": ":root{--ground:#F7F5FB;--ink:#1B1530;--ink-2:#4A4362;--ink-3:#6E6786;--hair:rgba(27,21,48,.16);--c-writing:#F4320B;--c-music:#2049DF;--c-spark:#94E718;--c-healing:#8D1DE2;--c-movement:#FF692A;--confluence:linear-gradient(100deg,#F4320B 0%,#FF692A 26%,#8D1DE2 62%,#2049DF 100%);--f-display:'Bodoni Moda',Didot,serif;--f-body:'Literata',Georgia,serif;--f-mono:'IBM Plex Mono',ui-monospace,monospace;--grid-size:32px;--grid-major:128px}"
+}

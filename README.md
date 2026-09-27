@@ -1,4 +1,6 @@
-# Hannah Lynn Mell — Portfolio
+# HannahLynnMell_Portfolio_V03
+
+Hannah Lynn Mell — Portfolio · Version 03 (2026-09-26)
 
 Landing site for Hannah Lynn Mell: writer, music educator, movement choreographer, interfaith chaplain and EMDR-trained curator of healing spaces.
 
@@ -10,9 +12,16 @@ Plain HTML/CSS/JS, no build step. Open `index.html` or serve the folder.
 index.html              page shell + layers
 assets/js/client.js     the client object (all copy, links, palette, embed + season settings)
 assets/js/seasons.js    SeasonalMargins: falling seasonal symbols (standalone embed)
+assets/js/dimensions.js floating faux-3D shapes + rips to a starry night
+assets/js/panels.js   Highlight + Calendar cards and the drawer under the carousel
+assets/js/omni.js     ⟐ section: the site condensing into a loader that links to OmniReality
+assets/js/chat.js     chat (standalone only), automatic replies + hand-off to Hannah
 assets/js/main.js       renders the page from the client object; parallax, omni mode, video, form
 assets/css/styles.css   design tokens + layout (light and dark)
 data/userData.json      original brief
+admin/dev/futureUpdatesForFullStack/   plans for live chat, CMS, backend
+admin/ToDoList/AdminDashboard/          to-do list for Hannah's admin dashboard
+admin/dev/handover_design.json         design handover (tokens, components, motion, voice) for matching OmniReality
 ```
 
 ## OmniReality embed
@@ -35,7 +44,22 @@ Use it on its own anywhere:
 <script src="assets/js/seasons.js" data-auto data-season="auto"></script>
 ```
 
+## Messages
+
+The contact form, the chat and the Save-a-seat sign-up form all deliver to hannahlynnmell@gmail.com through FormSubmit (`contact.endpoint`). The first message triggers a one-time activation email to Hannah; after she confirms, swap the address in the endpoint for the random alias FormSubmit gives her.
+
 ## To do
 
-- Contact form: set `contact.endpoint` in `client.js` (e.g. a Formspree URL) to deliver messages.
 - Writing: refresh `writing.fromArchive` as new Substack posts go up.
+
+## Light / dark
+
+Toggle in the top bar (remembered per visitor). Without a choice it follows the device setting. The gradient is identical in both modes.
+
+## Dimensions
+
+`client.js → dimensions` lists the floating shapes (sphere, cube, torus, pyramid, capsule: position, size, depth, colours) and the rips (which section, size, position, tilt). Depth 0.1 is far, blurred and slow; 0.9 is near, sharp and fast.
+
+## Paper
+
+`client.js → theme.paper`: `"grid"` or `"lined"` (notebook lines with a red margin rule). The footer has a switch to compare; `?paper=lined` works too.

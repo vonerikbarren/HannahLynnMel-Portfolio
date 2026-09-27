@@ -288,7 +288,8 @@
         spin: (Math.random() - 0.5) * (s.spin ? 1.6 : 0.9),
         flip: 0.6 + Math.random() * 1.2,
         alpha: 0.55 + Math.random() * 0.35,
-        t: Math.random() * 100
+        t: Math.random() * 100,
+        ox: 0, vx: 0, vy: 0, kick: 0    // breeze: offset + velocity from the pointer
       };
       p.x0 = spawnX(p);
       return p;
@@ -321,6 +322,54 @@
       if (reduce) frame(0);
     }
 
+    /* ---- breeze: the pointer (or a tap) pushes things aside ---- */
+    var ptr = { x: -9999, y: -9999, vx: 0, vy: 0, t: 0, on: false };
+    var gusts = [], streaks = [];
+    function onMove(e) {
+      if (e.pointerType === "touch") return;
+      var now = performance.now(), dtm = Math.max(8, now - ptr.t);
+      if (ptr.on) { ptr.vx = (e.clientX - ptr.x) / dtm * 1000; ptr.vy = (e.clientY - ptr.y) / dtm * 1000; }
+      ptr.x = e.clientX; ptr.y = e.clientY; ptr.t = now; ptr.on = true;
+      var sp = Math.hypot(ptr.vx, ptr.vy);
+      if (sp > 700 && streaks.length < 18 && Math.random() < 0.5) addStreak(ptr.x, ptr.y, ptr.vx / sp, ptr.vy / sp, Math.min(1, sp / 2400));
+    }
+    function onTap(e) {
+      if (e.pointerType !== "touch" && e.pointerType !== "pen") return;
+      gusts.push({ x: e.clientX, y: e.clientY, r: 0, life: 0 });
+      for (var k = 0; k < 10; k++) { var a = (k / 10) * TAU + Math.random() * 0.3; addStreak(e.clientX + Math.cos(a) * 14, e.clientY + Math.sin(a) * 14, Math.cos(a), Math.sin(a), 0.8); }
+    }
+    function addStreak(x, y, dx, dy, str) {
+      streaks.push({ x: x, y: y, dx: dx, dy: dy, len: 18 + Math.random() * 30 * (0.5 + str), curve: (Math.random() - 0.5) * 0.8, life: 0, max: 0.55 + Math.random() * 0.35, v: 180 + 380 * str });
+    }
+    if (!reduce) {
+      window.addEventListener("pointermove", onMove, { passive: true });
+      window.addEventListener("pointerdown", onTap, { passive: true });
+      document.addEventListener("mouseleave", function () { ptr.on = false; ptr.x = ptr.y = -9999; });
+    }
+    function breeze(p, x, dt) {
+      var R = 130, fx = 0, fy = 0;
+      if (ptr.on) {
+        var dx = x - ptr.x, dy = p.y - ptr.y, d = Math.hypot(dx, dy);
+        if (d < R && d > 0.1) {
+          var f = (1 - d / R);
+          var sp = Math.min(1600, Math.hypot(ptr.vx, ptr.vy));
+          fx += (dx / d) * f * 900 + ptr.vx * f * 0.9;   // away from the cursor, plus a push along its path
+          fy += (dy / d) * f * 700 + ptr.vy * f * 0.6;
+          p.kick = Math.max(p.kick, f * (0.4 + sp / 1600));
+        }
+      }
+      for (var g = 0; g < gusts.length; g++) {
+        var G = gusts[g], gx = x - G.x, gy = p.y - G.y, gd = Math.hypot(gx, gy);
+        var band = Math.abs(gd - G.r);
+        if (band < 60 && gd > 0.1) { var gf = (1 - band / 60) * (1 - G.life / 0.9); fx += gx / gd * gf * 2200; fy += gy / gd * gf * 1600; p.kick = Math.max(p.kick, gf); }
+      }
+      p.vx += fx * dt; p.vy += fy * dt;
+      p.vx *= Math.pow(0.12, dt); p.vy *= Math.pow(0.12, dt);   // air drag: settles back to the drift
+      p.ox += p.vx * dt; p.y += p.vy * dt;
+      p.ox *= Math.pow(0.55, dt);                                // slowly returns to its lane
+      p.kick *= Math.pow(0.2, dt);
+    }
+
     function frame(dt) {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
@@ -333,7 +382,8 @@
           if (p.extra) { parts.splice(i, 1); i--; continue; }
           parts[i] = p = newPart(false);
         }
-        var x = p.x0 + Math.sin(p.t * p.freq * TAU * 0.5 + p.phase) * p.amp;
+        var x = p.x0 + p.ox + Math.sin(p.t * p.freq * TAU * 0.5 + p.phase) * p.amp;
+        if (!reduce) { breeze(p, x, dt); x = p.x0 + p.ox + Math.sin(p.t * p.freq * TAU * 0.5 + p.phase) * p.amp; p.rot += p.kick * 6 * dt * (p.spin >= 0 ? 1 : -1); }
         ctx.save();
         ctx.globalAlpha = p.extra ? p.alpha : p.inLane ? p.alpha : p.alpha * 0.55;
         ctx.translate(x, p.y);
@@ -343,6 +393,37 @@
         ctx.drawImage(p.s.img, -p.size / 2, -p.size / 2, p.size, p.size);
         ctx.restore();
       }
+      // gust rings (taps) and wind streaks: the visible breeze
+      for (var g = gusts.length - 1; g >= 0; g--) {
+        var G = gusts[g]; G.life += dt; G.r += 520 * dt;
+        if (G.life > 0.9) { gusts.splice(g, 1); continue; }
+        ctx.globalAlpha = 0.22 * (1 - G.life / 0.9);
+        ctx.strokeStyle = breezeInk(); ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.arc(G.x, G.y, G.r, 0, TAU); ctx.stroke();
+      }
+      ctx.lineCap = "round";
+      for (var k = streaks.length - 1; k >= 0; k--) {
+        var S = streaks[k]; S.life += dt;
+        if (S.life > S.max) { streaks.splice(k, 1); continue; }
+        S.x += S.dx * S.v * dt; S.y += S.dy * S.v * dt; S.v *= Math.pow(0.3, dt);
+        var fade = Math.sin(Math.PI * S.life / S.max);
+        ctx.globalAlpha = 0.28 * fade; ctx.strokeStyle = breezeInk(); ctx.lineWidth = 1;
+        var nx = -S.dy, ny = S.dx, ex = S.x - S.dx * S.len, ey = S.y - S.dy * S.len;
+        ctx.beginPath(); ctx.moveTo(ex, ey);
+        ctx.quadraticCurveTo((S.x + ex) / 2 + nx * S.len * S.curve, (S.y + ey) / 2 + ny * S.len * S.curve, S.x, S.y);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    }
+    var inkCache = { at: 0, v: "rgba(110,90,170,1)" };
+    function breezeInk() {
+      var now = performance.now();
+      if (now - inkCache.at > 1000) {
+        var t = document.documentElement.getAttribute("data-theme");
+        var dark = t ? t === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        inkCache = { at: now, v: dark ? "rgba(235,228,255,1)" : "rgba(90,70,150,1)" };
+      }
+      return inkCache.v;
     }
 
     function loop(now) {
@@ -403,7 +484,96 @@
     };
   }
 
-  window.SeasonalMargins = { mount: mount, seasonFor: seasonFor, seasons: Object.keys(SETS) };
+  /* ---------- piles: what fell, gathered at the end of a section ---------- */
+  function pile(host, o) {
+    o = o || {};
+    var reduceP = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var W = o.width || 190, H = o.height || 96, dpr = Math.min(2, window.devicePixelRatio || 1);
+    var cv = document.createElement("canvas");
+    cv.className = "pile " + (o.side === "right" ? "pile-right" : "pile-left");
+    cv.setAttribute("aria-hidden", "true");
+    cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + "px"; cv.style.height = H + "px";
+    host.appendChild(cv);
+    var ctx = cv.getContext("2d");
+    var seed = o.seed || 1;
+    function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+    var season = "fall", items = [], sprites = [], t0 = 0, raf = 0, shown = false;
+
+    // mound profile: taller toward the page edge, tapering inward
+    function top(x) {
+      var u = o.side === "right" ? 1 - x / W : x / W;           // 0 at the edge, 1 inward
+      var h = H * 0.86 * Math.sqrt(Math.max(0, 1 - Math.pow(u * 1.05, 2))) * (0.9 + 0.1 * Math.sin(u * 11));  // a rounded heap
+      return H - 4 - Math.max(4, h);
+    }
+    function build() {
+      var s0 = o.seed || 1; seed = s0;
+      sprites = SETS[season].map(function (d) { return { img: makeSprite(d.draw, dpr), flip: d.flip !== false && !d.spin && !d.sway, scale: d.scale || 1, kind: d }; });
+      items = [];
+      var n = season === "winter" ? 16 : season === "summer" ? 7 : 80;
+      for (var i = 0; i < n; i++) {
+        var u0 = Math.pow(rnd(), 1.4) * 0.92;                        // denser toward the edge
+        var x = o.side === "right" ? W * (1 - u0) : W * u0;
+        var ty = top(x), y = ty + 4 + Math.pow(rnd(), 0.7) * (H - 8 - ty);
+        var sp = sprites[(rnd() * sprites.length) | 0];
+        items.push({ x: x, y: y, sp: sp, size: (season === "summer" ? 22 : 13) + rnd() * 11, rot: rnd() * Math.PI * 2, sx: sp.flip ? 0.45 + rnd() * 0.55 : 1, delay: rnd() * 0.9 + (1 - (y - ty) / (H + 1)) * 0.5 });
+      }
+      items.sort(function (a, b) { return a.y - b.y; });
+    }
+    function ground() {
+      ctx.save();
+      var ex = o.side === "right" ? W * 0.62 : W * 0.38;
+      ctx.save(); ctx.translate(ex, H - 4); ctx.scale(1, 0.12);
+      var g = ctx.createRadialGradient(0, 0, 0, 0, 0, W * 0.55);
+      g.addColorStop(0, "rgba(27,21,48,0.22)"); g.addColorStop(1, "rgba(27,21,48,0)");
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, W * 0.55, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      if (season === "winter" || season === "summer") {    // snow drift or sand mound
+        ctx.beginPath(); ctx.moveTo(0, H);
+        for (var x = 0; x <= W; x += 4) ctx.lineTo(x, top(x) + (season === "summer" ? 10 : 4));
+        ctx.lineTo(W, H); ctx.closePath();
+        var f = ctx.createLinearGradient(0, H * 0.2, 0, H);
+        if (season === "winter") { f.addColorStop(0, "#FFFFFF"); f.addColorStop(1, "#D9E2FA"); }
+        else { f.addColorStop(0, "#F6E3BC"); f.addColorStop(1, "#E4C088"); }
+        ctx.fillStyle = f; ctx.shadowColor = "rgba(40,60,140,0.25)"; ctx.shadowBlur = 6; ctx.fill();
+      }
+      ctx.restore();
+    }
+    function draw(now) {
+      var t = shown ? (now - t0) / 1000 : 0;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      ground();
+      var done = true;
+      items.forEach(function (it) {
+        var k = reduceP ? 1 : Math.max(0, Math.min(1, (t - it.delay) / 0.7));
+        if (k < 1) done = false;
+        if (k <= 0) return;
+        var e = 1 - Math.pow(1 - k, 3);
+        var y = it.y - (1 - e) * 70, wob = (1 - e) * Math.sin(k * 9) * 10;
+        ctx.save();
+        ctx.globalAlpha = Math.min(1, k * 2) * 0.95;
+        ctx.translate(it.x + wob, y); ctx.rotate(it.rot + (1 - e) * 2); ctx.scale(it.sx, 1);
+        ctx.drawImage(it.sp.img, -it.size / 2, -it.size / 2, it.size, it.size);
+        ctx.restore();
+      });
+      if (!done && !reduceP) raf = requestAnimationFrame(draw);
+    }
+    function render(s) {
+      season = SETS[s] ? s : season;
+      build();
+      cancelAnimationFrame(raf);
+      if (shown) { t0 = performance.now(); raf = requestAnimationFrame(draw); } else draw(performance.now());
+    }
+    if ("IntersectionObserver" in window && !reduceP) {
+      var io = new IntersectionObserver(function (es) {
+        if (es[0].isIntersecting && !shown) { shown = true; t0 = performance.now(); raf = requestAnimationFrame(draw); io.disconnect(); }
+      }, { threshold: 0.6 });
+      io.observe(cv);
+    } else { shown = true; }
+    render(o.season || "fall");
+    return { render: render, el: cv };
+  }
+
+  window.SeasonalMargins = { mount: mount, pile: pile, seasonFor: seasonFor, seasons: Object.keys(SETS) };
 
   // Simple embed: <script src="seasons.js" data-auto data-season="winter"></script>
   var me = document.currentScript;
